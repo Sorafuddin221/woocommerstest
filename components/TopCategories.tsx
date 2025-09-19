@@ -11,7 +11,7 @@ const TopCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -45,7 +45,7 @@ const TopCategories = () => {
           {categories.map((category) => (
             <div key={category.name} className="flex flex-col items-center text-gray-600 space-y-2">
               {category.imageUrl && (
-                <img src={`http://localhost:5000${category.imageUrl}`} alt={category.name} className="w-16 h-16 object-cover rounded-full" />
+                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.imageUrl}`} alt={category.name} className="w-16 h-16 object-cover rounded-full" />
               )}
               <p className="text-sm font-semibold">{category.name}</p>
             </div>

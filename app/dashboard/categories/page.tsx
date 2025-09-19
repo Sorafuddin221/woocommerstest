@@ -14,7 +14,7 @@ const CategoriesPage: React.FC = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/categories');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`);
       if (!response.ok) {
         throw new Error('Failed to fetch categories');
       }
@@ -50,7 +50,7 @@ const CategoriesPage: React.FC = () => {
     formData.append('file', selectedFile);
 
     try {
-      const uploadResponse = await fetch('http://localhost:5000/api/upload', {
+      const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -64,9 +64,9 @@ const CategoriesPage: React.FC = () => {
 
       const uploadData = await uploadResponse.json();
       console.log('Upload data:', uploadData);
-      const imageUrl = uploadData.urls[0];
+      const imageUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${uploadData.urls[0]}`;
 
-      const categoryResponse = await fetch('http://localhost:5000/api/categories', {
+      const categoryResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const CategoriesPage: React.FC = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/categories/${encodeURIComponent(categoryName)}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories/${encodeURIComponent(categoryName)}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -162,7 +162,7 @@ const CategoriesPage: React.FC = () => {
                   <div className="flex justify-between items-center">
                       <div className="flex items-center">
                           {category.imageUrl ? (
-                              <img src={category.imageUrl.startsWith('http') ? category.imageUrl : `http://localhost:5000${category.imageUrl}`} alt={category.name} className="w-16 h-16 object-cover rounded-md mr-4" />
+                              <img src={category.imageUrl.startsWith('http') ? category.imageUrl : `${process.env.NEXT_PUBLIC_BACKEND_URL}${category.imageUrl}`} alt={category.name} className="w-16 h-16 object-cover rounded-md mr-4" />
                           ) : (
                               <div className="w-16 h-16 bg-gray-700 rounded-md mr-4 flex items-center justify-center">
                                   <span className="text-xs text-gray-400">No Image</span>

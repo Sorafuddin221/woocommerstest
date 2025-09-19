@@ -40,7 +40,7 @@ const MenuSettingsPage = () => {
     // Fetch existing menu items from the backend
     const fetchMenuItems = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/menuitems');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems`);
         const data = await res.json();
         if (data && data.data) {
           setMenuItems(data.data);
@@ -65,7 +65,7 @@ const MenuSettingsPage = () => {
 
     const fetchShopDepartments = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products/shopDepartments');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/shopDepartments`);
         const data = await res.json();
         if (data) {
           setShopDepartments(data);
@@ -77,7 +77,7 @@ const MenuSettingsPage = () => {
 
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/categories');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`);
         const data = await res.json();
         if (data) {
           setCategories(data);
@@ -89,7 +89,7 @@ const MenuSettingsPage = () => {
 
     const fetchBrands = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products/brands');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/brands`);
         const data = await res.json();
         if (data) {
           setBrands(data);
@@ -109,7 +109,7 @@ const MenuSettingsPage = () => {
   const handleAddItem = async () => {
     if (newItem.name && newItem.page) {
       try {
-        const res = await fetch('http://localhost:5000/api/menuitems', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const MenuSettingsPage = () => {
         const parentItem = menuItems.find(item => item._id === parentId);
         if (!parentItem) return;
         const updatedChildren = [...(parentItem.children || []), subItemData];
-        const res = await fetch(`http://localhost:5000/api/menuitems/${parentId}`,
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems/${parentId}`,
           {
             method: 'PUT',
             headers: {
@@ -154,7 +154,7 @@ const MenuSettingsPage = () => {
 
   const handleDeleteItem = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/menuitems/${id}`,
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems/${id}`,
         {
           method: 'DELETE',
         }
@@ -172,7 +172,7 @@ const MenuSettingsPage = () => {
 
       const updatedChildren = (parentItem.children || []).filter(child => child._id !== subItemId);
 
-      const res = await fetch(`http://localhost:5000/api/menuitems/${parentId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems/${parentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
