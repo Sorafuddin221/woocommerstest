@@ -74,6 +74,10 @@ export async function GET(request) {
       currentPage: page,
       totalPages: Math.ceil(totalProducts / limit),
       totalProducts,
+    }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
     });
   } catch (error) {
     return NextResponse.json(
@@ -81,6 +85,15 @@ export async function GET(request) {
       { status: 500 }
     );
   }
+}
+
+export async function OPTIONS(request) {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
 }
 
 export async function POST(request) {
@@ -105,7 +118,12 @@ export async function POST(request) {
 
   try {
     const newProduct = await product.save();
-    return NextResponse.json(newProduct, { status: 201 });
+    return NextResponse.json(newProduct, {
+      status: 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Invalid product data', error: error.message },
