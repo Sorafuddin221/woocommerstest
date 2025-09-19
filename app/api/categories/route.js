@@ -7,13 +7,26 @@ export async function GET(request) {
 
   try {
     const categories = await Category.find({});
-    return NextResponse.json(categories);
+    return NextResponse.json(categories, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
       { status: 500 }
     );
   }
+}
+
+export async function OPTIONS(request) {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
 }
 
 export async function POST(request) {
@@ -26,7 +39,12 @@ export async function POST(request) {
       { imageUrl },
       { new: true, upsert: true } // Create if not exists
     );
-    return NextResponse.json(category, { status: 200 });
+    return NextResponse.json(category, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
