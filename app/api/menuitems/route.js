@@ -7,7 +7,11 @@ export async function GET(request) {
 
   try {
     const menuItems = await MenuItem.find();
-    return NextResponse.json({ success: true, data: menuItems });
+    return NextResponse.json({ success: true, data: menuItems }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: 'Server error', error: error.message },
@@ -16,13 +20,27 @@ export async function GET(request) {
   }
 }
 
+export async function OPTIONS(request) {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
 export async function POST(request) {
   await connectDB();
   const body = await request.json();
 
   try {
     const menuItem = await MenuItem.create(body);
-    return NextResponse.json({ success: true, data: menuItem }, { status: 201 });
+    return NextResponse.json({ success: true, data: menuItem }, {
+      status: 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { success: false, message: 'Server error', error: error.message },
