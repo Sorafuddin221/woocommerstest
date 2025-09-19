@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
@@ -40,7 +40,7 @@ export default function Home() {
     const fetchNewArrivals = async () => {
       try {
         console.log('Fetching new arrivals...');
-        const response = await fetch('http://localhost:5000/api/products/new-arrivals');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/new-arrivals`);
         console.log('New Arrivals response OK:', response.ok);
         if (!response.ok) {
           throw new Error('Failed to fetch new arrivals');
@@ -55,7 +55,7 @@ export default function Home() {
 
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/recent'); // Fetch only recent blog posts
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`); // Fetch only recent blog posts
         if (!response.ok) {
           throw new Error('Failed to fetch blog posts');
         }
@@ -69,7 +69,7 @@ export default function Home() {
     const fetchTopViewedProducts = async () => {
       try {
         console.log('Fetching top viewed products...');
-        const response = await fetch('http://localhost:5000/api/products/top-viewed');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/top-viewed`);
         console.log('Top Viewed Products response OK:', response.ok);
         if (!response.ok) {
           console.error('Failed to fetch top viewed products:', response.status, response.statusText);
