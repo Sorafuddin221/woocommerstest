@@ -97,7 +97,7 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
             <div className="mt-8 border-t border-gray-200 pt-6">
               <span className="text-gray-700 font-semibold mr-4">Share:</span>
               <div className="flex gap-3">
-                <FacebookShareButton url={shareUrl} hashtag={`#${product.name.replace(/\s/g, '')}`}>
+                <FacebookShareButton url={shareUrl} hashtag={`#${(product.name || '').replace(/\s/g, '')}`}>
                   <FacebookIcon size={32} round />
                 </FacebookShareButton>
                 <TwitterShareButton url={shareUrl} title={product.name}>
