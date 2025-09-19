@@ -25,8 +25,11 @@ export async function GET(request) {
         clientLogos: [],
         customFields: [],
       });
-    }
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
@@ -35,13 +38,26 @@ export async function GET(request) {
   }
 }
 
+export async function OPTIONS(request) {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
 export async function PUT(request) {
   await connectDB();
   const updates = await request.json();
 
   try {
     let settings = await ThemeSetting.findOneAndUpdate({}, updates, { new: true, upsert: true });
-    return NextResponse.json(settings);
+    return NextResponse.json(settings, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
