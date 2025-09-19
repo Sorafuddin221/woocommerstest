@@ -20,7 +20,10 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems`);
+        console.log('NEXT_PUBLIC_BACKEND_URL:', process.env.NEXT_PUBLIC_BACKEND_URL);
+        const fetchUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems`;
+        console.log('Fetching menu items from:', fetchUrl);
+        const res = await fetch(fetchUrl);
         const data = await res.json();
         if (data && data.data) {
           setMenuItems(data.data);
