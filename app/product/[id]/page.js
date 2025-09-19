@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 async function getProduct(id) {
   try {
-    const response = await fetch(`http://localhost:5000/api/products/${id}`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}`, { cache: 'no-store' });
     if (!response.ok) {
       return null;
     }
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }) {
 
 async function getRelatedProducts(id) {
   try {
-    const response = await fetch(`http://localhost:5000/api/products/${id}/related`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}/related`, { cache: 'no-store' });
     if (!response.ok) {
       return [];
     }
@@ -53,7 +53,7 @@ async function getRelatedProducts(id) {
 
 async function getThemeSettings() {
   try {
-    const response = await fetch(`http://localhost:5000/api/settings/theme`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, { cache: 'no-store' });
     if (!response.ok) {
       return null;
     }
@@ -97,7 +97,7 @@ export default async function ProductDetailsPage({ params }) {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.name,
-      "image": `http://localhost:3000${product.image}`,
+      "image": `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`,
       "description": product.shortDescription || product.description,
       "sku": product._id,
       "brand": {
@@ -106,7 +106,7 @@ export default async function ProductDetailsPage({ params }) {
       },
       "offers": {
         "@type": "Offer",
-        "url": `http://localhost:3000/product/${product._id}`,
+        "url": `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/${product._id}`,
         "priceCurrency": "USD",
         "price": product.price,
         "availability": "https://schema.org/InStock",

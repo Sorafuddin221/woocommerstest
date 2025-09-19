@@ -33,7 +33,7 @@ const ThemeOptionsPage = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/settings/theme');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`);
         if (!response.ok) {
           throw new Error('Failed to fetch settings');
         }
@@ -69,7 +69,7 @@ const ThemeOptionsPage = () => {
       formData.append('file', file);
 
       try {
-        const response = await fetch('http://localhost:5000/api/upload', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -81,8 +81,7 @@ const ThemeOptionsPage = () => {
         const data = await response.json();
         console.log('Upload response data:', data);
         if (data.success && data.urls && data.urls.length > 0) {
-          const imageUrl = `http://localhost:5000${data.urls[0]}`;
-
+          const imageUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;
           if (field === 'slideImage') {
             if (editingSlide) {
               setEditingSlide((prev) => (prev ? { ...prev, image: imageUrl } : null));
@@ -260,7 +259,7 @@ const ThemeOptionsPage = () => {
   const handleDeleteLogo = async (id: string) => {
     if (settings && confirm('Are you sure you want to delete this logo?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/settings/theme/logos/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme/logos/${id}`, {
           method: 'DELETE',
         });
 
@@ -296,7 +295,7 @@ const ThemeOptionsPage = () => {
 
     try {
       console.log('Sending settings to backend:', settings);
-      const response = await fetch('http://localhost:5000/api/settings/theme', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

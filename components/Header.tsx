@@ -34,7 +34,7 @@ const Header = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings/theme');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`);
         if (!res.ok) {
           throw new Error('Failed to fetch settings');
         }
@@ -50,7 +50,7 @@ const Header = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -63,7 +63,7 @@ const Header = () => {
 
     const fetchSocialLinks = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/sociallinks');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sociallinks`);
         const data = await res.json();
         if (data && data.data) {
           setSocialLinks(data.data);
@@ -75,7 +75,7 @@ const Header = () => {
 
     const fetchMenuItems = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/menuitems');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/menuitems`);
         const data = await res.json();
         if (data && data.data) {
           setMenuItems(data.data);
