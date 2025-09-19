@@ -69,10 +69,18 @@ export default function ShopBrandPage() {
     </nav>
   );
 
+  const stripLocalhostPrefix = (url: string) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+    if (backendUrl && url.startsWith(backendUrl)) {
+      return url.substring(backendUrl.length);
+    }
+    return url;
+  };
+
   return (
     <ProductPageTemplate
       title={brand}
-      heroImage={"/img/black-white-bedroom-with-red-accent.jpg"}
+      heroImage={stripLocalhostPrefix("/img/black-white-bedroom-with-red-accent.jpg")}
       subheading={`Browse our collection of ${brand}`}
       buttonUrl={"/"}
       breadcrumbs={breadcrumbs}

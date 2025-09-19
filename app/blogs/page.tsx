@@ -101,10 +101,18 @@ export default function BlogPage() {
     fetchRecentProducts();
   }, [searchTerm, selectedCategory, currentPage]);
 
+  const stripLocalhostPrefix = (url: string) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+    if (backendUrl && url.startsWith(backendUrl)) {
+      return url.substring(backendUrl.length);
+    }
+    return url;
+  };
+
   return (
     <BlogPageTemplate
       title={heroSettings?.blogPageHero?.heading || "Our Blog"}
-      heroImage={heroSettings?.blogPageHero?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg"}
+      heroImage={stripLocalhostPrefix(heroSettings?.blogPageHero?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg")}
       subheading={heroSettings?.blogPageHero?.subheading || ""}
       buttonUrl={heroSettings?.blogPageHero?.buttonUrl || ""}
     >

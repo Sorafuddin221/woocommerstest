@@ -46,12 +46,20 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
     onClose();
   };
 
+  const stripLocalhostPrefix = (url: string) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+    if (backendUrl && url.startsWith(backendUrl)) {
+      return url.substring(backendUrl.length);
+    }
+    return url;
+  };
+
   return (
     <aside id="mobile-sidebar" className="w-64 bg-custom-surface flex-shrink-0 p-4 fixed lg:relative lg:translate-x-0 h-full z-20 transform transition-transform duration-300 ease-in-out flex flex-col">
       <div>
         {/* Profile Section */}
         <div className="flex items-center space-x-4 p-2">
-          <Image className="h-10 w-10 rounded-full object-cover" src="/img/black-white-bedroom-with-red-accent.jpg" alt="Admin Avatar" width={40} height={40} />
+          <Image className="h-10 w-10 rounded-full object-cover" src={stripLocalhostPrefix("/img/black-white-bedroom-with-red-accent.jpg")} alt="Admin Avatar" width={40} height={40} />
           <div>
             <h2 className="text-md font-semibold text-white">Guest</h2>
             <p className="text-xs text-custom-text-secondary">Welcome</p>

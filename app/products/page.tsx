@@ -106,10 +106,18 @@ export default function ProductsPage() {
     </nav>
   );
 
+  const stripLocalhostPrefix = (url: string) => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+    if (backendUrl && url.startsWith(backendUrl)) {
+      return url.substring(backendUrl.length);
+    }
+    return url;
+  };
+
   return (
     <ProductPageTemplate
       title={heroSettings?.heading || "Our Shop"}
-      heroImage={heroSettings?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg"}
+      heroImage={stripLocalhostPrefix(heroSettings?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg")}
       subheading={heroSettings?.subheading || ""}
       buttonUrl={heroSettings?.buttonUrl || ""}
       breadcrumbs={breadcrumbs}
