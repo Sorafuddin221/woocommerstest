@@ -7,7 +7,11 @@ export async function GET(request) {
 
   try {
     const recentPosts = await BlogPost.find().sort({ date: -1 }).limit(3);
-    return NextResponse.json(recentPosts);
+    return NextResponse.json(recentPosts, {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
   } catch (error) {
     return NextResponse.json(
       { message: 'Server error', error: error.message },
@@ -15,3 +19,13 @@ export async function GET(request) {
     );
   }
 }
+
+export async function OPTIONS(request) {
+  return NextResponse.json({}, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+  });
+}
+
