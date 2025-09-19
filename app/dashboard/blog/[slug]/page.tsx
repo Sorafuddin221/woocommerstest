@@ -19,7 +19,7 @@ const EditBlogPostPage: React.FC = () => {
     const fetchBlogPost = async () => {
       if (!slug) return;
       try {
-        const response = await fetch(`http://localhost:5000/api/blog/${slug}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/${slug}`);
         if (!response.ok) {
           throw new Error('Failed to fetch blog post');
         }
@@ -34,7 +34,7 @@ const EditBlogPostPage: React.FC = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -52,7 +52,7 @@ const EditBlogPostPage: React.FC = () => {
   const handleSubmit = async (formData: any) => {
     if (!slug) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/blog/${slug}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/${slug}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ const FooterSettingsPage = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings/footer');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`);
         if (res.ok) {
           const data = await res.json();
           setSettings(data);
@@ -36,7 +36,7 @@ const FooterSettingsPage = () => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -46,8 +46,7 @@ const FooterSettingsPage = () => {
       const data = await res.json();
       if (data.urls && data.urls.length > 0) {
         const newGallery = [...(settings?.gallery || [])];
-        newGallery[index] = `http://localhost:5000${data.urls[0]}`;
-        setSettings({ ...settings, gallery: newGallery });
+        newGallery[index] = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;        setSettings({ ...settings, gallery: newGallery });
       } else {
         console.error('Upload response did not contain a URL.');
       }
@@ -65,7 +64,7 @@ const FooterSettingsPage = () => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:5000/api/upload', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -75,8 +74,7 @@ const FooterSettingsPage = () => {
       const data = await res.json();
       if (data.urls && data.urls.length > 0) {
         const newLogos = [...(settings?.clientLogos || [])];
-        newLogos[index] = `http://localhost:5000${data.urls[0]}`;
-        setSettings({ ...settings, clientLogos: newLogos });
+        newLogos[index] = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;        setSettings({ ...settings, clientLogos: newLogos });
       } else {
         console.error('Upload response did not contain a URL.');
       }
@@ -104,7 +102,7 @@ const FooterSettingsPage = () => {
   const handleSave = async () => {
     console.log('Saving settings:', settings);
     try {
-      await fetch('http://localhost:5000/api/settings/footer', {
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settings),

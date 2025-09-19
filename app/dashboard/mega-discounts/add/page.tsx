@@ -9,7 +9,7 @@ const AddMegaDiscountPage = () => {
   const handleSubmit = async (formData: MegaDiscountFormData) => {
     try {
       setError(null);
-      const response = await fetch('http://localhost:5000/api/mega-discounts', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mega-discounts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

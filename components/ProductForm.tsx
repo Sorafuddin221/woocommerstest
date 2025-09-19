@@ -27,9 +27,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
   const fetchData = async () => {
     try {
       const [categoriesRes, brandsRes, shopDepartmentsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/products/categories'),
-        fetch('http://localhost:5000/api/products/brands'),
-        fetch('http://localhost:5000/api/products/shopDepartments'),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/categories`),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/brands`),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/shopDepartments`),
       ]);
 
       if (!categoriesRes.ok || !brandsRes.ok || !shopDepartmentsRes.ok) {
@@ -93,7 +93,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
       formData.append('file', imageFile);
 
       try {
-        const response = await fetch('http://localhost:5000/api/upload', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
           headers: {
@@ -123,7 +123,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
       });
 
       try {
-        const response = await fetch('http://localhost:5000/api/upload', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
         });

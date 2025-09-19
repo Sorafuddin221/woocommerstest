@@ -30,7 +30,7 @@ const UsersPage: React.FC = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/users', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/users`, {
           headers: {
             // You might need to send a token for authentication if your backend requires it
             // 'Authorization': `Bearer ${session.accessToken}` // Example
@@ -56,7 +56,7 @@ const UsersPage: React.FC = () => {
     setCreateError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const UsersPage: React.FC = () => {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/users/${userId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/users/${userId}`, {
         method: 'DELETE',
         headers: {
           // 'Authorization': `Bearer ${session.accessToken}` // Example

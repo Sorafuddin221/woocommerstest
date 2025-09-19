@@ -41,7 +41,7 @@ export default function BlogPage() {
         queryParams.append('limit', postsPerPage.toString());
 
         console.log('Fetching blog posts with query params:', queryParams.toString());
-        const response = await fetch(`http://localhost:5000/api/blog?${queryParams.toString()}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog?${queryParams.toString()}`);
         console.log('Blog posts response OK:', response.ok);
         if (!response.ok) {
           throw new Error('Failed to fetch blog posts');
@@ -58,7 +58,7 @@ export default function BlogPage() {
 
     const fetchBlogCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch blog categories');
         }
@@ -71,7 +71,7 @@ export default function BlogPage() {
 
     const fetchRecentBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/recent');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`);
         if (!response.ok) {
           throw new Error('Failed to fetch recent blog posts');
         }
@@ -84,7 +84,7 @@ export default function BlogPage() {
 
     const fetchRecentProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products/recent'); // Assuming a /products/recent endpoint
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/recent`); // Assuming a /products/recent endpoint
         if (!response.ok) {
           throw new Error('Failed to fetch recent products');
         }

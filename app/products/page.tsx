@@ -53,7 +53,7 @@ export default function ProductsPage() {
         queryParams.append('limit', productsPerPage.toString());
 
         console.log('Fetching products with query params:', queryParams.toString());
-        const response = await fetch(`http://localhost:5000/api/products?${queryParams.toString()}`, { cache: 'no-store' });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products?${queryParams.toString()}`, { cache: 'no-store' });
         console.log('Response OK:', response.ok);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
@@ -71,7 +71,7 @@ export default function ProductsPage() {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -84,7 +84,7 @@ export default function ProductsPage() {
 
     const fetchRecentBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/recent');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`);
         if (!response.ok) {
           throw new Error('Failed to fetch recent blog posts');
         }

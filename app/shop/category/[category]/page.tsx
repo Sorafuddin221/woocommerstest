@@ -34,7 +34,7 @@ export default function ShopCategoryPage() {
         queryParams.append('page', currentPage.toString());
         queryParams.append('limit', productsPerPage.toString());
 
-        const response = await fetch(`http://localhost:5000/api/products?${queryParams.toString()}`, { cache: 'no-store' });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products?${queryParams.toString()}`, { cache: 'no-store' });
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
@@ -48,7 +48,7 @@ export default function ShopCategoryPage() {
 
     const fetchRecentBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog/recent');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`);
         if (!response.ok) {
           throw new Error('Failed to fetch recent blog posts');
         }

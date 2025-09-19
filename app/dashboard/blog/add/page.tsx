@@ -13,7 +13,7 @@ const AddBlogPage: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products/categories');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/categories`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -31,7 +31,7 @@ const AddBlogPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:5000/api/blog', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

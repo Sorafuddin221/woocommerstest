@@ -21,7 +21,7 @@ const EditProductPage: React.FC<EditProductPageProps> = ({ params }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch product');
         }
@@ -39,7 +39,7 @@ const EditProductPage: React.FC<EditProductPageProps> = ({ params }) => {
 
   const handleSubmit = async (formData: ProductFormData) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

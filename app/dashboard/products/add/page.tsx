@@ -11,7 +11,7 @@ const AddProductPage: React.FC = () => {
 
   const handleSubmit = async (formData: ProductFormData): Promise<boolean> => {
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

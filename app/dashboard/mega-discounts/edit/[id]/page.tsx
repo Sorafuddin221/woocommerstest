@@ -12,7 +12,7 @@ const EditMegaDiscountPage = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchMegaDiscount = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/mega-discounts/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mega-discounts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch mega discount');
         }
@@ -32,7 +32,7 @@ const EditMegaDiscountPage = ({ params }: { params: { id: string } }) => {
 
   const handleSubmit = async (formData: MegaDiscountFormData) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/mega-discounts/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mega-discounts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const MegaDiscountsPage = () => {
   useEffect(() => {
     const fetchMegaDiscounts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/mega-discounts');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mega-discounts`);
         if (!response.ok) {
           throw new Error('Failed to fetch mega discounts');
         }
@@ -36,7 +36,7 @@ const MegaDiscountsPage = () => {
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this mega discount?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/mega-discounts/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mega-discounts/${id}`, {
           method: 'DELETE',
         });
 

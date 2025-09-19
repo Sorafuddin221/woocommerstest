@@ -11,7 +11,7 @@ const BrandsPage: React.FC = () => {
   const fetchBrands = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/products/brands');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/brands`);
       if (!response.ok) {
         throw new Error('Failed to fetch brands');
       }
@@ -33,7 +33,7 @@ const BrandsPage: React.FC = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:5000/api/products/brands/${encodeURIComponent(brandName)}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/brands/${encodeURIComponent(brandName)}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

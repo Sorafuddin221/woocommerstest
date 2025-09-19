@@ -23,7 +23,7 @@ const BlogTable: React.FC = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/blog');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog`);
         if (!response.ok) {
           throw new Error('Failed to fetch blog posts');
         }
@@ -42,7 +42,7 @@ const BlogTable: React.FC = () => {
   const handleDelete = async (slug: string) => {
     if (confirm('Are you sure you want to delete this blog post?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/blog/${slug}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/${slug}`, {
           method: 'DELETE',
         });
         if (!response.ok) {

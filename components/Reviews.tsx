@@ -15,7 +15,7 @@ const Reviews: React.FC<ReviewsProps> = ({ productId, onReviewAdded }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/reviews/${productId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reviews/${productId}`);
         if (response.ok) {
           const data = await response.json();
           setReviews(data);
@@ -37,7 +37,7 @@ const Reviews: React.FC<ReviewsProps> = ({ productId, onReviewAdded }) => {
     e.preventDefault();
     console.log('Submitting review:', { ...newReview, product: productId });
     try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

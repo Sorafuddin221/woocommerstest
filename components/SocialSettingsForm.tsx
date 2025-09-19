@@ -27,7 +27,7 @@ const SocialSettingsForm = () => {
     // Fetch existing social links from the backend
     const fetchSocialLinks = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/sociallinks');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sociallinks`);
         const data = await res.json();
         if (data && data.data) {
           setSocialLinks(data.data);
@@ -42,7 +42,7 @@ const SocialSettingsForm = () => {
   const handleAddLink = async () => {
     if (newLink.url) {
       try {
-        const res = await fetch('http://localhost:5000/api/sociallinks', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sociallinks`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const SocialSettingsForm = () => {
 
   const handleDeleteLink = async (id: string) => {
     try {
-      await fetch(`http://localhost:5000/api/sociallinks/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sociallinks/${id}`, {
         method: 'DELETE',
       });
       setSocialLinks(socialLinks.filter((link) => link._id !== id));

@@ -14,7 +14,7 @@ const NewsletterSubscriptionsPage = () => {
   useEffect(() => {
     const fetchSubscriptions = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/newsletter');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/newsletter`);
         if (res.ok) {
           const data = await res.json();
           setSubscriptions(data);
@@ -28,7 +28,7 @@ const NewsletterSubscriptionsPage = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/newsletter/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/newsletter/${id}`, {
         method: 'DELETE',
       });
       if (res.ok) {

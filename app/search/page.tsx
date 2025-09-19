@@ -5,7 +5,7 @@ import { Product, BlogPost, SearchResults } from '@/lib/interfaces';
 
 async function searchAll(query: string): Promise<SearchResults> {
   try {
-    const response = await fetch(`http://localhost:5000/api/search?q=${query}`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/search?q=${query}`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('Failed to fetch search results');
     }
