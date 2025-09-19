@@ -25,6 +25,7 @@ export async function GET(request) {
         clientLogos: [],
         customFields: [],
       });
+    }
     return NextResponse.json(settings, {
       headers: {
         'Access-Control-Allow-Origin': '*'
