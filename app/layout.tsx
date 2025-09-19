@@ -10,7 +10,7 @@ import CookieBanner from "@/components/CookieBanner";
 
 async function getSettings() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`);
+    const res = await fetch(new URL('/api/settings/theme', process.env.NEXT_PUBLIC_BACKEND_URL).toString());
     if (!res.ok) {
       console.error('Failed to fetch settings:', res.status, res.statusText);
       return null;
