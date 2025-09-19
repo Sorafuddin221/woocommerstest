@@ -24,7 +24,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings/contact');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/contact`);
         if (!res.ok) {
           console.error('Failed to fetch contact settings:', res.status, res.statusText);
           return;
@@ -45,7 +45,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
 
     const fetchShopDepartments = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/products/shopDepartments');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/shopDepartments`);
         if (!res.ok) {
           console.error('Failed to fetch shop departments:', res.status, res.statusText);
           return;
@@ -66,7 +66,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
 
     const fetchFooterSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings/footer');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`);
         if (res.ok) {
           const data = await res.json();
           console.log('Footer settings data:', data);
@@ -85,7 +85,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
   const handleSubscribe = async () => {
     console.log('Subscribing with email:', email);
     try {
-      const res = await fetch('http://localhost:5000/api/newsletter/subscribe', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

@@ -16,7 +16,7 @@ const ContactSettingsForm = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/settings/contact');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/contact`);
         setSettings(response.data);
       } catch (error: any) {
         console.error('Error fetching contact settings:', error);
@@ -34,7 +34,7 @@ const ContactSettingsForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/settings/contact', settings);
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/contact`, settings);
       alert('Contact settings updated successfully!');
     } catch (error: any) {
       console.error('Error updating contact settings:', error);

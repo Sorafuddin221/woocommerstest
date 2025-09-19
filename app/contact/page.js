@@ -13,7 +13,7 @@ export default function ContactPage() {
   useEffect(() => {
     const fetchContactSettings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/settings/contact');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/contact`);
         if (!res.ok) {
           console.error('Failed to fetch contact settings:', res.status, res.statusText);
           setSettings({}); // Set to empty object on failure
@@ -57,7 +57,7 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/contacts', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/contacts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
