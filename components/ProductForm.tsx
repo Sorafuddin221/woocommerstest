@@ -17,7 +17,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
   const [showNewBrandInput, setShowNewBrandInput] = useState(false);
   const [shopDepartments, setShopDepartments] = useState<string[]>([]);
   const [showNewShopDepartmentInput, setShowNewShopDepartmentInput] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.productImage || null);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>(initialData?.gallery || []);
@@ -84,7 +84,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let imageUrl = initialData?.productImage || '';
+    let imageUrl = initialData?.image || '';
     let finalGalleryUrls = initialData?.gallery || []; // Start with existing gallery URLs
 
     // Upload main product image
@@ -155,7 +155,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         shortDescription: shortDescription,
         metaKeywords: formData.get('metaKeywords') as string,
         metaDescription: formData.get('metaDescription') as string,
-        productImage: imageUrl,
+        image: imageUrl,
         gallery: finalGalleryUrls, // Use the finalGalleryUrls
         url: formData.get('url') as string,
       };

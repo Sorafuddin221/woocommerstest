@@ -108,7 +108,7 @@ export interface ProductFormData {
   shortDescription: string;
   metaKeywords: string;
   metaDescription: string;
-  productImage: string; // Added for the image data URL
+  image: string; // Added for the image data URL
   gallery: string[]; // Added for gallery images
   url: string;
 }

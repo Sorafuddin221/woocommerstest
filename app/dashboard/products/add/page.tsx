@@ -24,7 +24,7 @@ const AddProductPage: React.FC = () => {
           category: formData.category,
           brand: formData.brand,
           shopDepartment: formData.shopDepartment,
-          image: formData.productImage, // Handle image upload separately if needed
+          image: formData.image, // Handle image upload separately if needed
           gallery: formData.gallery, // Add this line
           rating: 0, // Default rating
           originalPrice: null, // Default originalPrice

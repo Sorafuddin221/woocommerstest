@@ -97,7 +97,7 @@ export default async function ProductDetailsPage({ params }) {
       "@context": "https://schema.org/",
       "@type": "Product",
       "name": product.name,
-      "image": `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`,
+      "image": product.image,
       "description": product.shortDescription || product.description,
       "sku": product._id,
       "brand": {
