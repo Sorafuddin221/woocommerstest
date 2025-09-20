@@ -19,6 +19,7 @@
     "axios": "^1.11.0",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
+    "cloudinary": "^2.7.0",
     "cross-env": "^10.0.0",
     "geist": "^1.5.1",
     "mongoose": "^8.18.1",
