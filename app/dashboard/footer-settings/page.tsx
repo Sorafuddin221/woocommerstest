@@ -84,7 +84,6 @@ const FooterSettingsPage = () => {
       setPreviews(newPreviews);
 
       setSettings(prevSettings => {
-        if (!prevSettings) return null;
         const newSettings = { ...prevSettings };
         const newArray = [...(newSettings[settingsKey] || [])];
         newArray[index] = null;
