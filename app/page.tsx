@@ -69,7 +69,7 @@ export default function Home() {
     const fetchTopViewedProducts = async () => {
       try {
         console.log('Fetching top viewed products...');
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/top-viewed`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/top-viewed`, { cache: 'no-store' });
         console.log('Top Viewed Products response OK:', response.ok);
         if (!response.ok) {
           console.error('Failed to fetch top viewed products:', response.status, response.statusText);
