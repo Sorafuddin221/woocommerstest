@@ -96,9 +96,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
-          headers: {
-            'x-filename': imageFile.name,
-          },
         });
 
         if (!response.ok) {
@@ -133,7 +130,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         }
 
         const data = await response.json();
-        finalGalleryUrls = data.urls || []; // Ensure it's an array, even if data.urls is undefined
+        const newGalleryUrls = data.urls || [];
+        finalGalleryUrls = [...finalGalleryUrls, ...newGalleryUrls]; // Combine old and new URLs
       } catch (error: any) {
         console.error('Error uploading gallery images:', error);
         alert('Failed to upload gallery images. Please try again.');
