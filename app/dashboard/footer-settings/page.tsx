@@ -3,14 +3,20 @@
 import { useEffect, useState } from 'react';
 
 interface FooterSettings {
-  gallery: string[];
+  gallery: (string | null)[];
   newsletterText?: string;
   copyrightText?: string;
-  clientLogos?: string[];
+  clientLogos?: (string | null)[];
 }
 
+const NUM_IMAGES = 4;
+
 const FooterSettingsPage = () => {
-  const [settings, setSettings] = useState<FooterSettings>({ gallery: [] });
+  const [settings, setSettings] = useState<FooterSettings>({ gallery: Array(NUM_IMAGES).fill(null), clientLogos: Array(NUM_IMAGES).fill(null) });
+  const [galleryFiles, setGalleryFiles] = useState<(File | null)[]>(Array(NUM_IMAGES).fill(null));
+  const [galleryPreviews, setGalleryPreviews] = useState<(string | null)[]>(Array(NUM_IMAGES).fill(null));
+  const [logoFiles, setLogoFiles] = useState<(File | null)[]>(Array(NUM_IMAGES).fill(null));
+  const [logoPreviews, setLogoPreviews] = useState<(string | null)[]>(Array(NUM_IMAGES).fill(null));
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -19,6 +25,9 @@ const FooterSettingsPage = () => {
         if (res.ok) {
           const data = await res.json();
           setSettings(data);
+          // Initialize previews with fetched data
+          setGalleryPreviews(data.gallery || Array(NUM_IMAGES).fill(null));
+          setLogoPreviews(data.clientLogos || Array(NUM_IMAGES).fill(null));
         }
       } catch (error) {
         console.error('Error fetching footer settings:', error);
@@ -27,88 +36,91 @@ const FooterSettingsPage = () => {
     fetchSettings();
   }, []);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    if (!file) return;
-
+  const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error('Image upload failed');
+    }
+    const data = await response.json();
+    if (data.success && data.urls && data.urls.length > 0) {
+      return data.urls[0];
+    }
+    throw new Error(data.message || 'Upload failed: No URL returned.');
+  };
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'x-filename': file.name,
-        },
-      });
-      const data = await res.json();
-      if (data.urls && data.urls.length > 0) {
-        const newGallery = [...(settings?.gallery || [])];
-        newGallery[index] = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;        setSettings({ ...settings, gallery: newGallery });
-      } else {
-        console.error('Upload response did not contain a URL.');
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error);
+  const createChangeHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const newFiles = [...files];
+      newFiles[index] = file;
+      setFiles(newFiles);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newPreviews = [...previews];
+        newPreviews[index] = reader.result as string;
+        setPreviews(newPreviews);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleLogoFileChange = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    if (!file) return;
+  const handleGalleryFileChange = (index: number) => createChangeHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews);
+  const handleLogoFileChange = (index: number) => createChangeHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews);
 
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'x-filename': file.name,
-        },
-      });
-      const data = await res.json();
-      if (data.urls && data.urls.length > 0) {
-        const newLogos = [...(settings?.clientLogos || [])];
-        newLogos[index] = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;        setSettings({ ...settings, clientLogos: newLogos });
-      } else {
-        console.error('Upload response did not contain a URL.');
-      }
-    } catch (error) {
-      console.error('Error uploading file:', error);
-    }
-  };
-
-  const handleDeleteGalleryImage = (index: number) => {
+  const createDeleteHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void) => {
     if (confirm('Are you sure you want to delete this image?')) {
-      const newGallery = [...(settings?.gallery || [])];
-      newGallery[index] = ''; // Set to empty string to clear the image
-      setSettings({ ...settings, gallery: newGallery });
+      const newFiles = [...files];
+      newFiles[index] = null;
+      setFiles(newFiles);
+
+      const newPreviews = [...previews];
+      newPreviews[index] = null;
+      setPreviews(newPreviews);
     }
   };
 
-  const handleDeleteFooterLogo = (index: number) => {
-    if (confirm('Are you sure you want to delete this logo?')) {
-      const newLogos = [...(settings?.clientLogos || [])];
-      newLogos[index] = ''; // Set to empty string to clear the image
-      setSettings({ ...settings, clientLogos: newLogos });
-    }
-  };
+  const handleDeleteGalleryImage = (index: number) => createDeleteHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews);
+  const handleDeleteFooterLogo = (index: number) => createDeleteHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews);
 
   const handleSave = async () => {
-    console.log('Saving settings:', settings);
     try {
+      const updatedSettings = { ...settings };
+
+      const uploadPromises = galleryFiles.map(async (file, index) => {
+        if (file) {
+          const url = await uploadImage(file);
+          if (!updatedSettings.gallery) updatedSettings.gallery = [];
+          updatedSettings.gallery[index] = url;
+        }
+      });
+
+      const logoUploadPromises = logoFiles.map(async (file, index) => {
+        if (file) {
+          const url = await uploadImage(file);
+          if (!updatedSettings.clientLogos) updatedSettings.clientLogos = [];
+          updatedSettings.clientLogos[index] = url;
+        }
+      });
+
+      await Promise.all([...uploadPromises, ...logoUploadPromises]);
+
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings),
+        body: JSON.stringify(updatedSettings),
       });
+
+      setSettings(updatedSettings);
+      alert('Footer settings saved successfully!');
     } catch (error) {
       console.error('Error saving footer settings:', error);
+      alert(`Error saving settings: ${error}`);
     }
   };
 
@@ -117,14 +129,14 @@ const FooterSettingsPage = () => {
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Footer Settings</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[...Array(4)].map((_, index) => (
+          {[...Array(NUM_IMAGES)].map((_, index) => (
             <div key={index} className="border rounded-lg p-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">Image {index + 1}</label>
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                 <div className="space-y-1 text-center">
-                  {settings?.gallery[index] ? (
+                  {galleryPreviews[index] ? (
                     <>
-                      <img src={settings.gallery[index]} alt={`Gallery image ${index + 1}`} className="mx-auto h-24 w-24 object-cover rounded-md" />
+                      <img src={galleryPreviews[index]!} alt={`Gallery image ${index + 1}`} className="mx-auto h-24 w-24 object-cover rounded-md" />
                       <button
                         type="button"
                         onClick={() => handleDeleteGalleryImage(index)}
@@ -141,9 +153,8 @@ const FooterSettingsPage = () => {
                   <div className="flex text-sm text-gray-600">
                     <label htmlFor={`file-upload-${index}`} className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                       <span>Upload a file</span>
-                      <input id={`file-upload-${index}`} name={`file-upload-${index}`} type="file" className="sr-only" onChange={(e) => handleFileChange(e, index)} />
+                      <input id={`file-upload-${index}`} name={`file-upload-${index}`} type="file" className="sr-only" onChange={handleGalleryFileChange(index)} />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
                   </div>
                   <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                 </div>
@@ -176,14 +187,14 @@ const FooterSettingsPage = () => {
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4 text-gray-800">Client Logos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[...Array(4)].map((_, index) => (
+            {[...Array(NUM_IMAGES)].map((_, index) => (
               <div key={index} className="border rounded-lg p-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Logo {index + 1}</label>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                   <div className="space-y-1 text-center">
-                    {settings?.clientLogos?.[index] ? (
+                    {logoPreviews[index] ? (
                       <>
-                        <img src={settings.clientLogos[index]} alt={`Client logo ${index + 1}`} className="mx-auto h-24 w-24 object-contain rounded-md" />
+                        <img src={logoPreviews[index]!} alt={`Client logo ${index + 1}`} className="mx-auto h-24 w-24 object-contain rounded-md" />
                         <button
                           type="button"
                           onClick={() => handleDeleteFooterLogo(index)}
@@ -200,9 +211,8 @@ const FooterSettingsPage = () => {
                     <div className="flex text-sm text-gray-600">
                       <label htmlFor={`logo-upload-${index}`} className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                         <span>Upload a file</span>
-                        <input id={`logo-upload-${index}`} name={`logo-upload-${index}`} type="file" className="sr-only" onChange={(e) => handleLogoFileChange(e, index)} />
+                        <input id={`logo-upload-${index}`} name={`logo-upload-${index}`} type="file" className="sr-only" onChange={handleLogoFileChange(index)} />
                       </label>
-                      <p className="pl-1">or drag and drop</p>
                     </div>
                     <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                   </div>

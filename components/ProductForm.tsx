@@ -66,15 +66,20 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
 
   const handleGalleryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setGalleryFiles(files);
+    if (files.length === 0) return;
 
+    // Append new files to the existing list for upload
+    setGalleryFiles(prevFiles => [...prevFiles, ...files]);
+
+    // Generate previews for the new files and append them to the existing previews
     const newPreviews: string[] = [];
     files.forEach(file => {
       const reader = new FileReader();
       reader.onloadend = () => {
         newPreviews.push(reader.result as string);
+        // When all new files are read, update the state
         if (newPreviews.length === files.length) {
-          setGalleryPreviews(newPreviews);
+          setGalleryPreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
         }
       };
       reader.readAsDataURL(file);

@@ -11,243 +11,225 @@ const ThemeOptionsPage = () => {
   const [settings, setSettings] = useState<ThemeSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // State for Add/Edit Modals
   const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
-  const [newSlideData, setNewSlideData] = useState<HeroSlide>({
-    image: '',
-    title: '',
-    subtitle: '',
-    ctaButtonText: '',
-    ctaButtonLink: '',
-  });
+  const [newSlideData, setNewSlideData] = useState<Partial<HeroSlide>>({ image: '', title: '', subtitle: '', ctaButtonText: '', ctaButtonLink: '' });
   const [editingLogo, setEditingLogo] = useState<ClientLogo | null>(null);
-  const [newLogoData, setNewLogoData] = useState<ClientLogo>({
-    imageUrl: '',
-    link: '',
-  });
+  const [newLogoData, setNewLogoData] = useState<Partial<ClientLogo>>({ imageUrl: '', link: '' });
   const [editingSocialLink, setEditingSocialLink] = useState<SocialLink | null>(null);
-  const [newSocialLinkData, setNewSocialLinkData] = useState<SocialLink>({
-    platform: '',
-    url: '',
-  });
+  const [newSocialLinkData, setNewSocialLinkData] = useState<Partial<SocialLink>>({ platform: '', url: '' });
+
+  // State for file handling
+  const [headerLogoFile, setHeaderLogoFile] = useState<File | null>(null);
+  const [headerLogoPreview, setHeaderLogoPreview] = useState<string | null>(null);
+  const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
+  const [slideFile, setSlideFile] = useState<File | null>(null);
+  const [slidePreview, setSlidePreview] = useState<string | null>(null);
+  const [clientLogoFile, setClientLogoFile] = useState<File | null>(null);
+  const [clientLogoPreview, setClientLogoPreview] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch settings');
-        }
+        if (!response.ok) throw new Error('Failed to fetch settings');
         const data = await response.json();
         setSettings(data);
+        setHeaderLogoPreview(data.headerLogoUrl);
+        setFaviconPreview(data.faviconUrl);
       } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchSettings();
   }, []);
 
+  // Reusable Upload Function
+  const uploadImage = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error('Image upload failed');
+    }
+    const data = await response.json();
+    if (data.success && data.urls && data.urls.length > 0) {
+      return data.urls[0];
+    }
+    throw new Error(data.message || 'Upload failed: No URL returned.');
+  };
+
+  // Generic change handler for simple text inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
-
-    setSettings((prevSettings) => {
-      if (!prevSettings) return null;
-      return {
-        ...prevSettings,
-        [name]: type === 'checkbox' ? checked : value,
-      };
-    });
+    setSettings((prev) => (prev ? { ...prev, [name]: type === 'checkbox' ? checked : value } : null));
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, field: 'headerLogoUrl' | 'slideImage' | 'clientLogoImage' | 'metaLogoUrl' | 'faviconUrl') => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to upload file');
-        }
-
-        const data = await response.json();
-        console.log('Upload response data:', data);
-        if (data.success && data.urls && data.urls.length > 0) {
-          const imageUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${data.urls[0]}`;
-          if (field === 'slideImage') {
-            if (editingSlide) {
-              setEditingSlide((prev) => (prev ? { ...prev, image: imageUrl } : null));
-            } else {
-              setNewSlideData((prev) => ({ ...prev, image: imageUrl }));
-            }
-          } else if (field === 'clientLogoImage') {
-            if (editingLogo) {
-              setEditingLogo((prev) => (prev ? { ...prev, imageUrl: imageUrl } : null));
-            } else {
-              setNewLogoData((prev) => ({ ...prev, imageUrl: imageUrl }));
-            }
-          } else {
-            setSettings((prevSettings) => {
-              if (!prevSettings) return null;
-              return {
-                ...prevSettings,
-                [field]: imageUrl,
-              };
-            });
-          }
-        } else {
-          throw new Error(data.message || 'File upload failed with no URL returned.');
-        }
-      } catch (err: any) {
-        setError(err.message);
-      }
+  // Specific handlers for each file input
+  const createChangeHandler = (setFile: (file: File) => void, setPreview: (url: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setPreview(reader.result as string);
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSlideChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: keyof HeroSlide) => {
-    const { value } = e.target;
+  const handleHeaderLogoChange = createChangeHandler(setHeaderLogoFile, setHeaderLogoPreview);
+  const handleFaviconChange = createChangeHandler(setFaviconFile, setFaviconPreview);
+  const handleSlideFileChange = createChangeHandler(setSlideFile, setSlidePreview);
+  const handleClientLogoFileChange = createChangeHandler(setClientLogoFile, setClientLogoPreview);
+
+  // Handlers for slide text inputs
+  const handleSlideChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
     if (editingSlide) {
-      setEditingSlide((prev) => (prev ? { ...prev, [field]: value } : null));
+      setEditingSlide((prev) => (prev ? { ...prev, [name]: value } : null));
     } else {
-      setNewSlideData((prev) => ({ ...prev, [field]: value }));
+      setNewSlideData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof ClientLogo) => {
-    const { value } = e.target;
-    if (editingLogo) {
-      setEditingLogo((prev) => (prev ? { ...prev, [field]: value } : null));
-    } else {
-      setNewLogoData((prev) => ({ ...prev, [field]: value }));
+  const handleAddSlide = async () => {
+    if (!settings) return;
+    let imageUrl = newSlideData.image || '';
+    try {
+      if (slideFile) {
+        imageUrl = await uploadImage(slideFile);
+      }
+      const slideToAdd: HeroSlide = { ...newSlideData, image: imageUrl, title: newSlideData.title || '' };
+      setSettings((prev) => (prev ? { ...prev, heroSlides: [...(prev.heroSlides || []), slideToAdd] } : null));
+      setNewSlideData({ image: '', title: '', subtitle: '', ctaButtonText: '', ctaButtonLink: '' });
+      setSlideFile(null);
+      setSlidePreview(null);
+    } catch (err: any) {
+      alert(`Error adding slide: ${err.message}`);
     }
   };
 
-  const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof SocialLink) => {
-    const { value } = e.target;
-    if (editingSocialLink) {
-      setEditingSocialLink((prev) => (prev ? { ...prev, [field]: value } : null));
-    } else {
-      setNewSocialLinkData((prev) => ({ ...prev, [field]: value }));
-    }
-  };
-
-  const handleAddSlide = () => {
-    if (settings) {
-      setSettings((prev) => (prev ? { ...prev, heroSlides: [...(prev.heroSlides || []), { ...newSlideData, _id: undefined }] } : null));
-      setNewSlideData({
-        image: '',
-        title: '',
-        subtitle: '',
-        ctaButtonText: '',
-        ctaButtonLink: '',
-      });
-    }
-  };
-
-  const handleAddLogo = () => {
-    if (settings) {
-      setSettings((prev) => (prev ? { ...prev, clientLogos: [...(prev.clientLogos || []), { ...newLogoData, _id: undefined }] } : null));
-      setNewLogoData({
-        imageUrl: '',
-        link: '',
-      });
-    }
-  };
-
-  const handleAddSocialLink = () => {
-    if (settings) {
-      setSettings((prev) => (prev ? { ...prev, socialLinks: [...(prev.socialLinks || []), { ...newSocialLinkData, _id: undefined }] } : null));
-      setNewSocialLinkData({
-        platform: '',
-        url: '',
-      });
+  const handleUpdateSlide = async () => {
+    if (!settings || !editingSlide) return;
+    let imageUrl = editingSlide.image;
+    try {
+      if (slideFile) {
+        imageUrl = await uploadImage(slideFile);
+      }
+      const updatedSlide = { ...editingSlide, image: imageUrl };
+      setSettings((prev) =>
+        prev ? { ...prev, heroSlides: (prev.heroSlides || []).map((s) => (s._id === updatedSlide._id ? updatedSlide : s)) } : null
+      );
+      setEditingSlide(null);
+      setSlideFile(null);
+      setSlidePreview(null);
+    } catch (err: any) {
+      alert(`Error updating slide: ${err.message}`);
     }
   };
 
   const handleEditSlide = (slide: HeroSlide) => {
     setEditingSlide(slide);
-    setNewSlideData({
-      image: '',
-      title: '',
-      subtitle: '',
-      ctaButtonText: '',
-      ctaButtonLink: '',
-    });
+    setSlidePreview(slide.image);
+    setNewSlideData({}); // Clear new slide form
+  };
+
+  // Similar handlers for Client Logos
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (editingLogo) {
+      setEditingLogo((prev) => (prev ? { ...prev, [name]: value } : null));
+    } else {
+      setNewLogoData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleAddLogo = async () => {
+    if (!settings) return;
+    let imageUrl = newLogoData.imageUrl || '';
+    try {
+      if (clientLogoFile) {
+        imageUrl = await uploadImage(clientLogoFile);
+      }
+      const logoToAdd: ClientLogo = { ...newLogoData, imageUrl: imageUrl };
+      setSettings((prev) => (prev ? { ...prev, clientLogos: [...(prev.clientLogos || []), logoToAdd] } : null));
+      setNewLogoData({ imageUrl: '', link: '' });
+      setClientLogoFile(null);
+      setClientLogoPreview(null);
+    } catch (err: any) {
+      alert(`Error adding logo: ${err.message}`);
+    }
+  };
+
+  const handleUpdateLogo = async () => {
+    if (!settings || !editingLogo) return;
+    let imageUrl = editingLogo.imageUrl;
+    try {
+      if (clientLogoFile) {
+        imageUrl = await uploadImage(clientLogoFile);
+      }
+      const updatedLogo = { ...editingLogo, imageUrl };
+      setSettings((prev) =>
+        prev ? { ...prev, clientLogos: (prev.clientLogos || []).map((l) => (l._id === updatedLogo._id ? updatedLogo : l)) } : null
+      );
+      setEditingLogo(null);
+      setClientLogoFile(null);
+      setClientLogoPreview(null);
+    } catch (err: any) {
+      alert(`Error updating logo: ${err.message}`);
+    }
   };
 
   const handleEditLogo = (logo: ClientLogo) => {
     setEditingLogo(logo);
-    setNewLogoData({
-      imageUrl: logo.imageUrl,
-      link: logo.link,
-      _id: logo._id,
-    });
+    setClientLogoPreview(logo.imageUrl);
+    setNewLogoData({}); // Clear new logo form
   };
 
-  const handleUpdateSlide = () => {
-    if (settings && editingSlide) {
-      setSettings((prev) =>
-        prev
-          ? {
-              ...prev,
-              heroSlides: (prev.heroSlides || []).map((slide) =>
-                slide._id === editingSlide._id ? editingSlide : slide
-              ),
-            }
-          : null
-      );
-      setEditingSlide(null);
+  // Main form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!settings) return;
+
+    const updatedSettings = { ...settings };
+
+    try {
+      if (headerLogoFile) {
+        updatedSettings.headerLogoUrl = await uploadImage(headerLogoFile);
+      }
+      if (faviconFile) {
+        updatedSettings.faviconUrl = await uploadImage(faviconFile);
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedSettings),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to save settings');
+      }
+
+      setSettings(updatedSettings);
+      setHeaderLogoFile(null);
+      setFaviconFile(null);
+      alert('Theme settings saved!');
+    } catch (err: any) {
+      setError(err.message);
+      alert(`Error saving settings: ${err.message}`);
     }
   };
 
-  const handleUpdateLogo = () => {
-    if (settings && editingLogo) {
-      setSettings((prev) =>
-        prev
-          ? {
-              ...prev,
-              clientLogos: (prev.clientLogos || []).map((logo) =>
-                logo._id === editingLogo._id ? editingLogo : logo
-              ),
-            }
-          : null
-      );
-      setEditingLogo(null);
-    }
-  };
-
-  const handleEditSocialLink = (link: SocialLink) => {
-    setEditingSocialLink(link);
-    setNewSocialLinkData({
-      platform: '',
-      url: '',
-    });
-  };
-
-  const handleUpdateSocialLink = () => {
-    if (settings && editingSocialLink) {
-      setSettings((prev) =>
-        prev
-          ? {
-              ...prev,
-              socialLinks: (prev.socialLinks || []).map((link) =>
-                link._id === editingSocialLink._id ? editingSocialLink : link
-              ),
-            }
-          : null
-      );
-      setEditingSocialLink(null);
-    }
-  };
-
+  // Delete handlers remain the same...
   const handleDeleteSlide = (id: string) => {
     if (settings && confirm('Are you sure you want to delete this slide?')) {
       setSettings((prev) =>
@@ -281,40 +263,9 @@ const ThemeOptionsPage = () => {
     }
   };
 
-  const handleDeleteSocialLink = (id: string) => {
-    if (settings && confirm('Are you sure you want to delete this social link?')) {
-      setSettings((prev) =>
-        prev ? { ...prev, socialLinks: (prev.socialLinks || []).filter((link) => link._id !== id) } : null
-      );
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!settings) return;
-
-    try {
-      console.log('Sending settings to backend:', settings);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(settings),
-      });
-
-      const data = await response.json();
-      console.log('Backend response for saving settings:', data);
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to save settings');
-      }
-
-      alert('Theme settings saved!');
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!settings) return <p>No settings found.</p>;
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -397,10 +348,10 @@ const ThemeOptionsPage = () => {
                 type="file"
                 id="faviconUrl"
                 name="faviconUrl"
-                onChange={(e) => handleFileChange(e, 'faviconUrl')}
+                onChange={handleFaviconChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {settings.faviconUrl && <img src={settings.faviconUrl} alt="Favicon" className="mt-4 h-10 w-10" />}
+              {faviconPreview && <img src={faviconPreview} alt="Favicon" className="mt-4 h-10 w-10" />}
             </div>
           </>
         )}
@@ -414,10 +365,10 @@ const ThemeOptionsPage = () => {
                 type="file"
                 id="headerLogoUrl"
                 name="headerLogoUrl"
-                onChange={(e) => handleFileChange(e, 'headerLogoUrl')}
+                onChange={handleHeaderLogoChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {settings.headerLogoUrl && <img src={settings.headerLogoUrl || '/img/placeholder.jpg'} alt="Header Logo" className="mt-4 h-20" />}
+              {headerLogoPreview && <img src={headerLogoPreview} alt="Header Logo" className="mt-4 h-20" />}
             </div>
             <div className="mb-4 ">
               <label htmlFor="headerLogoText" className="block text-light-700 text-sm font-bold mb-2">Logo Text:</label>
@@ -500,11 +451,11 @@ const ThemeOptionsPage = () => {
                   type="file"
                   id="slideImage"
                   name="slideImage"
-                  onChange={(e) => handleFileChange(e, 'slideImage')}
+                  onChange={handleSlideFileChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
-                {(editingSlide?.image || newSlideData.image) && (
-                  <Image src={editingSlide?.image || newSlideData.image} alt="Slide Preview" width={100} height={100} className="mt-4 rounded" />
+                {slidePreview && (
+                  <Image src={slidePreview} alt="Slide Preview" width={100} height={100} className="mt-4 rounded" />
                 )}
               </div>
               <div className="mb-4 ">
@@ -513,8 +464,8 @@ const ThemeOptionsPage = () => {
                   type="text"
                   id="slideTitle"
                   name="title"
-                  value={editingSlide?.title || newSlideData.title}
-                  onChange={(e) => handleSlideChange(e, 'title')}
+                  value={editingSlide?.title || newSlideData.title || ''}
+                  onChange={handleSlideChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -524,8 +475,8 @@ const ThemeOptionsPage = () => {
                   type="text"
                   id="slideSubtitle"
                   name="subtitle"
-                  value={editingSlide?.subtitle || newSlideData.subtitle}
-                  onChange={(e) => handleSlideChange(e, 'subtitle')}
+                  value={editingSlide?.subtitle || newSlideData.subtitle || ''}
+                  onChange={handleSlideChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -535,8 +486,8 @@ const ThemeOptionsPage = () => {
                   type="text"
                   id="slideCtaButtonText"
                   name="ctaButtonText"
-                  value={editingSlide?.ctaButtonText || newSlideData.ctaButtonText}
-                  onChange={(e) => handleSlideChange(e, 'ctaButtonText')}
+                  value={editingSlide?.ctaButtonText || newSlideData.ctaButtonText || ''}
+                  onChange={handleSlideChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -546,8 +497,8 @@ const ThemeOptionsPage = () => {
                   type="text"
                   id="slideCtaButtonLink"
                   name="ctaButtonLink"
-                  value={editingSlide?.ctaButtonLink || newSlideData.ctaButtonLink}
-                  onChange={(e) => handleSlideChange(e, 'ctaButtonLink')}
+                  value={editingSlide?.ctaButtonLink || newSlideData.ctaButtonLink || ''}
+                  onChange={handleSlideChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>
@@ -635,11 +586,11 @@ const ThemeOptionsPage = () => {
                   type="file"
                   id="logoImage"
                   name="logoImage"
-                  onChange={(e) => handleFileChange(e, 'clientLogoImage')}
+                  onChange={handleClientLogoFileChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
-                {(editingLogo?.imageUrl || newLogoData.imageUrl) && (
-                  <Image src={editingLogo?.imageUrl || newLogoData.imageUrl} alt="Logo Preview" width={100} height={100} className="mt-4 rounded" />
+                {clientLogoPreview && (
+                  <Image src={clientLogoPreview} alt="Logo Preview" width={100} height={100} className="mt-4 rounded" />
                 )}
               </div>
               <div className="mb-4">
@@ -648,8 +599,8 @@ const ThemeOptionsPage = () => {
                   type="text"
                   id="logoLink"
                   name="link"
-                  value={editingLogo?.link || newLogoData.link}
-                  onChange={(e) => handleLogoChange(e, 'link')}
+                  value={editingLogo?.link || newLogoData.link || ''}
+                  onChange={handleLogoChange}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
               </div>

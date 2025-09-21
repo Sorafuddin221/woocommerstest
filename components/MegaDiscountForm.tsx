@@ -8,31 +8,22 @@ interface MegaDiscountFormProps {
 }
 
 const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialData }) => {
-  const [formData, setFormData] = useState(initialData || {
-    title: '',
-    subtitle: '',
-    image: '',
-    buttonText: '',
-    buttonLink: '',
-  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    let imageUrl = initialData?.image || '';
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+    if (imageFile) {
       const uploadFormData = new FormData();
-      uploadFormData.append('file', file);
+      uploadFormData.append('file', imageFile);
 
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: uploadFormData,
-          headers: {
-            'x-filename': file.name,
-          },
         });
 
         if (!response.ok) {
@@ -40,16 +31,35 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
         }
 
         const data = await response.json();
-        setFormData((prevData) => ({ ...prevData, image: data.urls[0] }));
-      } catch (error: any) {
-        console.error(error);
+        imageUrl = (data.urls && data.urls.length > 0) ? data.urls[0] : '';
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Failed to upload image. Please try again.');
+        return;
       }
     }
+
+    const finalFormData: MegaDiscountFormData = {
+      title: (form.elements.namedItem('title') as HTMLInputElement).value,
+      subtitle: (form.elements.namedItem('subtitle') as HTMLInputElement).value,
+      image: imageUrl,
+      buttonText: (form.elements.namedItem('buttonText') as HTMLInputElement).value,
+      buttonLink: (form.elements.namedItem('buttonLink') as HTMLInputElement).value,
+    };
+
+    onSubmit(finalFormData);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -60,8 +70,7 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
           type="text"
           id="title"
           name="title"
-          value={formData.title}
-          onChange={handleChange}
+          defaultValue={initialData?.title}
           required
           className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
         />
@@ -72,8 +81,7 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
           type="text"
           id="subtitle"
           name="subtitle"
-          value={formData.subtitle}
-          onChange={handleChange}
+          defaultValue={initialData?.subtitle}
           required
           className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
         />
@@ -87,7 +95,7 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
           onChange={handleFileChange}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
         />
-        {formData.image && <img src={formData.image || '/img/placeholder.jpg'} alt="Preview" className="mt-4 h-20" />}
+        {imagePreview && <img src={imagePreview} alt="Preview" className="mt-4 h-20" />}
       </div>
       <div className="mb-4">
         <label htmlFor="buttonText" className="block text-light-700 text-sm font-bold mb-2">Button Text:</label>
@@ -95,8 +103,7 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
           type="text"
           id="buttonText"
           name="buttonText"
-          value={formData.buttonText}
-          onChange={handleChange}
+          defaultValue={initialData?.buttonText}
           required
           className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
         />
@@ -107,8 +114,7 @@ const MegaDiscountForm: React.FC<MegaDiscountFormProps> = ({ onSubmit, initialDa
           type="text"
           id="buttonLink"
           name="buttonLink"
-          value={formData.buttonLink}
-          onChange={handleChange}
+          defaultValue={initialData?.buttonLink}
           required
           className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
         />

@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Editor from './Editor'; // Import the new Editor component
 
 interface BlogFormData {
@@ -20,58 +21,58 @@ interface BlogFormProps {
 const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [content, setContent] = useState(initialData?.content || '');
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImageFile(e.target.files[0]);
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const form = e.currentTarget as HTMLFormElement;
-      let imageUrl = initialData?.image || '';
+    const form = e.currentTarget as HTMLFormElement;
+    let imageUrl = initialData?.image || '';
 
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append('file', imageFile);
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload`, {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
           method: 'POST',
           body: formData,
-          headers: {
-            'X-FileName': imageFile.name,
-          },
         });
 
-        const responseText = await response.text();
-
-        try {
-          const data = JSON.parse(responseText);
-          if (data.success) {
-            imageUrl = data.urls[0];;
-          } else {
-            console.error('Image upload failed:', data.message);
-          }
-        } catch (error: any) {
-          console.error('Error parsing JSON response:', error);
+        if (!response.ok) {
+          throw new Error('Failed to upload image');
         }
+
+        const data = await response.json();
+        imageUrl = (data.urls && data.urls.length > 0) ? data.urls[0] : '';
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Failed to upload image. Please try again.');
+        return;
       }
-
-      const blogData: BlogFormData = {
-        title: (form.elements.namedItem('title') as HTMLInputElement).value,
-        content: content,
-        author: (form.elements.namedItem('author') as HTMLInputElement).value,
-        category: (form.elements.namedItem('category') as HTMLSelectElement).value,
-        excerpt: (form.elements.namedItem('excerpt') as HTMLTextAreaElement).value,
-        image: imageUrl,
-      };
-
-      onSubmit(blogData);
-    } catch (error: any) {
-      console.error('An unexpected error occurred in handleSubmit:', error);
     }
+
+    const blogData: BlogFormData = {
+      title: (form.elements.namedItem('title') as HTMLInputElement).value,
+      content: content,
+      author: (form.elements.namedItem('author') as HTMLInputElement).value,
+      category: (form.elements.namedItem('category') as HTMLSelectElement).value,
+      excerpt: (form.elements.namedItem('excerpt') as HTMLTextAreaElement).value,
+      image: imageUrl,
+    };
+
+    onSubmit(blogData);
   };
 
   return (
@@ -93,9 +94,9 @@ const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }
           <div className="md:col-span-2">
             <label htmlFor="blog-image" className="block text-sm font-medium text-custom-text-secondary mb-2">Blog Image</label>
             <input type="file" id="blog-image" name="image" onChange={handleImageChange} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
-            {initialData?.image && !imageFile && (
-              <div className="mt-2">
-                <img src={initialData.image} alt="Current blog image" className="w-32 h-32 object-cover rounded-lg" />
+            {imagePreview && (
+              <div className="mt-4">
+                <Image src={imagePreview} alt="Blog image preview" width={200} height={200} className="rounded-lg" />
               </div>
             )}
           </div>
