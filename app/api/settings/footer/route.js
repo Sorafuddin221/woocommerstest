@@ -28,10 +28,10 @@ export async function PUT(request) {
 
     // Filter out empty strings from gallery and clientLogos arrays
     if (body.gallery) {
-      body.gallery = body.gallery.filter(url => url !== '');
+      body.gallery = body.gallery.filter(url => url !== '' && url !== null);
     }
     if (body.clientLogos) {
-      body.clientLogos = body.clientLogos.filter(url => url !== '');
+      body.clientLogos = body.clientLogos.filter(url => url !== '' && url !== null);
     }
 
     settings.set(body);

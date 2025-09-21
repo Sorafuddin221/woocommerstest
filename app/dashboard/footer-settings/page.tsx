@@ -73,7 +73,7 @@ const FooterSettingsPage = () => {
   const handleGalleryFileChange = (index: number) => createChangeHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews);
   const handleLogoFileChange = (index: number) => createChangeHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews);
 
-  const createDeleteHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void) => {
+  const createDeleteHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void, settingsKey: 'gallery' | 'clientLogos') => () => {
     if (confirm('Are you sure you want to delete this image?')) {
       const newFiles = [...files];
       newFiles[index] = null;
@@ -82,11 +82,20 @@ const FooterSettingsPage = () => {
       const newPreviews = [...previews];
       newPreviews[index] = null;
       setPreviews(newPreviews);
+
+      setSettings(prevSettings => {
+        if (!prevSettings) return null;
+        const newSettings = { ...prevSettings };
+        const newArray = [...(newSettings[settingsKey] || [])];
+        newArray[index] = null;
+        newSettings[settingsKey] = newArray;
+        return newSettings;
+      });
     }
   };
 
-  const handleDeleteGalleryImage = (index: number) => createDeleteHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews);
-  const handleDeleteFooterLogo = (index: number) => createDeleteHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews);
+  const handleDeleteGalleryImage = (index: number) => createDeleteHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews, 'gallery')();
+  const handleDeleteFooterLogo = (index: number) => createDeleteHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews, 'clientLogos')();
 
   const handleSave = async () => {
     try {
