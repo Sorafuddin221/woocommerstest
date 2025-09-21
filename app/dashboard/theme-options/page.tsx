@@ -106,7 +106,13 @@ const ThemeOptionsPage = () => {
       if (slideFile) {
         imageUrl = await uploadImage(slideFile);
       }
-      const slideToAdd: HeroSlide = { ...newSlideData, image: imageUrl, title: newSlideData.title || '' };
+      const slideToAdd: HeroSlide = {
+        image: imageUrl,
+        title: newSlideData.title || '',
+        subtitle: newSlideData.subtitle || '',
+        ctaButtonText: newSlideData.ctaButtonText || '',
+        ctaButtonLink: newSlideData.ctaButtonLink || '',
+      };
       setSettings((prev) => (prev ? { ...prev, heroSlides: [...(prev.heroSlides || []), slideToAdd] } : null));
       setNewSlideData({ image: '', title: '', subtitle: '', ctaButtonText: '', ctaButtonLink: '' });
       setSlideFile(null);
