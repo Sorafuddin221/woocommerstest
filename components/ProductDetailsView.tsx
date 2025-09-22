@@ -14,7 +14,7 @@ interface ProductDetailsViewProps {
 export default function ProductDetailsView({ product: initialProduct }: { product: Product }) {
   const [product, setProduct] = useState(initialProduct);
   const [activeTab, setActiveTab] = useState('description');
-  const [mainImage, setMainImage] = useState(product.image || '/img/placeholder.jpg');
+  const [mainImage, setMainImage] = useState(product.image ? (product.image.startsWith('http') ? product.image : `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`) : '/img/placeholder.jpg');
   const [shareUrl, setShareUrl] = useState('');
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
               {product.gallery.map((imgSrc, index) => (
                 <Image
                   key={index}
-                  src={imgSrc}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${imgSrc}`}
                   alt={`${product.name} - Thumbnail ${index + 1}`}
                   width={100}
                   height={100}

@@ -21,7 +21,7 @@ const ProductPageTemplate: React.FC<ProductPageTemplateProps> = ({ title, heroIm
       <section
         className="relative bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('${heroImage}')`,
+          backgroundImage: `url('${heroImage ? (heroImage.startsWith('http') ? heroImage : `${process.env.NEXT_PUBLIC_BACKEND_URL}${heroImage}`) : ''}')`,
           height: '50vh',
         }}
       >

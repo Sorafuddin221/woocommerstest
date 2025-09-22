@@ -160,7 +160,7 @@ export default function BlogPage() {
             <ul className="space-y-4 text-gray-700">
               {recentBlogPosts.map((post) => (
                 <li key={post._id} className="flex items-center gap-3">
-                  <Image src={post.image || '/img/blog-placeholder.png'} alt={post.title || 'Recent blog post image'} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
+                  <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${post.image}`} alt={post.title || 'Recent blog post image'} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
                   <div>
                     <Link href={`/blog/${post._id}`} className="text-sm font-medium text-gray-800 hover:text-blue-600">
                       {post.title}
@@ -177,7 +177,7 @@ export default function BlogPage() {
             <ul className="space-y-4 text-gray-700">
               {recentProducts.map((product) => (
                 <li key={product._id} className="flex items-center gap-3">
-                  <Image src={product.image || '/img/placeholder.jpg'} alt={product.name || 'Recent product image'} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
+                  <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`} alt={product.name || 'Recent product image'} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
                   <div>
                     <Link href={product.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-gray-800 hover:text-blue-600">
                       {product.name}
@@ -195,7 +195,7 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {blogPosts.map((blogPost) => (
               <div key={blogPost._id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <Image src={typeof blogPost.image === 'string' && blogPost.image ? blogPost.image : '/img/placeholder.jpg'} alt={blogPost.title || 'Blog post image'} width={400} height={250} className="w-full h-64 object-cover" />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${blogPost.image}`} alt={blogPost.title || 'Blog post image'} width={400} height={250} className="w-full h-64 object-cover" />
                 <div className="p-6">
                   <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{blogPost.title}</h3>

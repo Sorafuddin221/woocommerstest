@@ -25,15 +25,27 @@ async function getSettings() {
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSettings();
 
+  const faviconUrl = settings?.faviconUrl 
+    ? settings.faviconUrl.startsWith('http') 
+      ? settings.faviconUrl 
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${settings.faviconUrl}` 
+    : "/favicon.ico";
+
+  const metaLogoUrl = settings?.metaLogoUrl
+    ? settings.metaLogoUrl.startsWith('http')
+      ? settings.metaLogoUrl
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${settings.metaLogoUrl}`
+    : null;
+
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
     title: settings?.metaTitle || "My Affiliate App",
     description: settings?.metaDescription || "A powerful affiliate marketing platform.",
     icons: {
-      icon: settings?.faviconUrl || "/favicon.ico",
+      icon: faviconUrl,
     },
     openGraph: {
-      images: settings?.metaLogoUrl ? [settings.metaLogoUrl] : [],
+      images: metaLogoUrl ? [metaLogoUrl] : [],
     },
   };
 }

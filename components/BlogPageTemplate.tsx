@@ -20,7 +20,7 @@ const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, s
       <section
         className="relative bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('${heroImage || '/img/balck-wall-and-red-coffee-bad-design-in-bad-room.jpg'}')`,
+          backgroundImage: `url('${heroImage ? (heroImage.startsWith('http') ? heroImage : `${process.env.NEXT_PUBLIC_BACKEND_URL}${heroImage}`) : '/img/balck-wall-and-red-coffee-bad-design-in-bad-room.jpg'}')`,
           height: '50vh',
         }}
       >

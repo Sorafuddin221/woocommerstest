@@ -37,7 +37,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <Image src={product.image || '/img/placeholder.jpg'} alt={product.name || 'Product image'} width={200} height={200} className="mb-4 rounded-lg" />
+              <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`} alt={product.name || 'Product image'} width={200} height={200} className="mb-4 rounded-lg" />
               <div className="w-full">
                 <p className="text-xs text-gray-500 font-semibold mb-1">{product.category.toUpperCase()}</p>
                 <h3 className="font-bold text-lg mb-2">{product.name}</h3>
