@@ -149,7 +149,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
               {footerSettings?.gallery.map((image, index) => (
                 image && (
                   <div key={index} className="relative w-full h-24">
-                    <Image src={image} alt={`Gallery image ${index + 1}`} layout="fill" objectFit="cover" />
+                    <img src={image} alt={`Gallery image ${index + 1}`} className="w-full h-full object-cover" />
                   </div>
                 )
               ))}
@@ -177,7 +177,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
           <div className="flex space-x-2">
             {footerSettings?.clientLogos?.map((logo, index) => (
               logo && (
-                <Image key={index} src={logo} alt={`Client logo ${index + 1}`} width={50} height={30} className="h-8 w-auto" objectFit="contain" />
+                <img key={index} src={logo} alt={`Client logo ${index + 1}`} className="h-8 w-auto object-contain" />
               )
             ))}
           </div>
