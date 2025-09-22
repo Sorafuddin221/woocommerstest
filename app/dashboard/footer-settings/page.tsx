@@ -120,24 +120,24 @@ const FooterSettingsPage = () => {
       if (!updatedSettings.clientLogos) updatedSettings.clientLogos = [];
 
       // Process gallery images
-      const newGallery = await Promise.all(galleryFiles.map(async (file, index) => {
+      const newGallery = (await Promise.all(galleryFiles.map(async (file, index) => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.gallery?.[index]; // Keep existing URL or null
+          return updatedSettings.gallery?.[index] || null; // Ensure it's string or null
         }
-      }));
-      updatedSettings.gallery = newGallery.filter(Boolean); // Filter out nulls and undefined
+      }))).filter(Boolean) as (string | null)[]; // Explicitly cast
+      updatedSettings.gallery = newGallery;
 
       // Process client logos
-      const newClientLogos = await Promise.all(logoFiles.map(async (file, index) => {
+      const newClientLogos = (await Promise.all(logoFiles.map(async (file, index) => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.clientLogos?.[index]; // Keep existing URL or null
+          return updatedSettings.clientLogos?.[index] || null; // Ensure it's string or null
         }
-      }));
-      updatedSettings.clientLogos = newClientLogos.filter(Boolean); // Filter out nulls and undefined
+      }))).filter(Boolean) as (string | null)[]; // Explicitly cast
+      updatedSettings.clientLogos = newClientLogos;
 
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',
