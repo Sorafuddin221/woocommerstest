@@ -44,7 +44,7 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
               {product.gallery.map((imgSrc, index) => (
                 <Image
                   key={index}
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${imgSrc}`}
+                  src={imgSrc}
                   alt={`${product.name} - Thumbnail ${index + 1}`}
                   width={100}
                   height={100}
