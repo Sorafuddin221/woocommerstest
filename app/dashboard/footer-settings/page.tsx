@@ -147,6 +147,7 @@ const FooterSettingsPage = () => {
 
       setSettings(updatedSettings);
       alert('Footer settings saved successfully!');
+      window.location.reload(); // Reload page to reflect changes on frontend
     } catch (error) {
       console.error('Error saving footer settings:', error);
       alert(`Error saving settings: ${error}`);
