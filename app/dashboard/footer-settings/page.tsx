@@ -124,20 +124,20 @@ const FooterSettingsPage = () => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.gallery[index]; // Keep existing URL or null
+          return updatedSettings.gallery?.[index]; // Keep existing URL or null
         }
       }));
-      updatedSettings.gallery = newGallery;
+      updatedSettings.gallery = newGallery.filter(Boolean); // Filter out nulls and undefined
 
       // Process client logos
       const newClientLogos = await Promise.all(logoFiles.map(async (file, index) => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.clientLogos[index]; // Keep existing URL or null
+          return updatedSettings.clientLogos?.[index]; // Keep existing URL or null
         }
       }));
-      updatedSettings.clientLogos = newClientLogos;
+      updatedSettings.clientLogos = newClientLogos.filter(Boolean); // Filter out nulls and undefined
 
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',
