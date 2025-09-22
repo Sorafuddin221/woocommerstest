@@ -124,7 +124,7 @@ const Header = () => {
                 <div className="flex flex-col items-center">
                     
                     {settings.showHeaderLogoImage && typeof settings.headerLogoUrl === 'string' && settings.headerLogoUrl && (
-                            <Image src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
+                            <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
                         )}
                         {settings.showHeaderLogoText && settings.headerLogoText && (
                             <span className="text-3xl font-bold">{settings.headerLogoText}</span>
@@ -146,7 +146,7 @@ const Header = () => {
                 {settings &&(
               <div className="flex items-center space-x-2 flex-shrink-0">
                   {settings.showHeaderLogoImage && typeof settings.headerLogoUrl === 'string' && settings.headerLogoUrl && (
-                    <Image src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
+                    <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
                         )}
                   {settings.showHeaderLogoText && settings.headerLogoText && (
                   <span className="text-3xl font-bold">{settings.headerLogoText}</span>
