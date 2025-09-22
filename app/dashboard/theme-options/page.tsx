@@ -53,18 +53,24 @@ const ThemeOptionsPage = () => {
   const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
-      method: 'POST',
-      body: formData,
-    });
-    if (!response.ok) {
-      throw new Error('Image upload failed');
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Image upload failed: ${errorText}`);
+      }
+      const data = await response.json();
+      if (data.success && data.urls && data.urls.length > 0) {
+        return data.urls[0];
+      }
+      throw new Error(data.message || 'Upload failed: No URL returned.');
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      throw error;
     }
-    const data = await response.json();
-    if (data.success && data.urls && data.urls.length > 0) {
-      return data.urls[0];
-    }
-    throw new Error(data.message || 'Upload failed: No URL returned.');
   };
 
   // Generic change handler for simple text inputs
