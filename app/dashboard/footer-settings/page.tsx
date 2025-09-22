@@ -115,23 +115,25 @@ const FooterSettingsPage = () => {
     try {
       const updatedSettings = { ...settings };
 
-      const uploadPromises = galleryFiles.map(async (file, index) => {
+      // Process gallery images
+      const newGallery = await Promise.all(galleryFiles.map(async (file, index) => {
         if (file) {
-          const url = await uploadImage(file);
-          if (!updatedSettings.gallery) updatedSettings.gallery = [];
-          updatedSettings.gallery[index] = url;
+          return await uploadImage(file);
+        } else {
+          return updatedSettings.gallery[index]; // Keep existing URL or null
         }
-      });
+      }));
+      updatedSettings.gallery = newGallery;
 
-      const logoUploadPromises = logoFiles.map(async (file, index) => {
+      // Process client logos
+      const newClientLogos = await Promise.all(logoFiles.map(async (file, index) => {
         if (file) {
-          const url = await uploadImage(file);
-          if (!updatedSettings.clientLogos) updatedSettings.clientLogos = [];
-          updatedSettings.clientLogos[index] = url;
+          return await uploadImage(file);
+        } else {
+          return updatedSettings.clientLogos[index]; // Keep existing URL or null
         }
-      });
-
-      await Promise.all([...uploadPromises, ...logoUploadPromises]);
+      }));
+      updatedSettings.clientLogos = newClientLogos;
 
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',

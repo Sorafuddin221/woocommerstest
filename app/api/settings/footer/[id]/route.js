@@ -9,8 +9,17 @@ export async function DELETE(request, { params }) {
   try {
     let settings = await FooterSettings.findOne();
     if (settings) {
-      settings.gallery = settings.gallery.filter((image) => image !== id);
-      settings.clientLogos = settings.clientLogos.filter((logo) => logo !== id);
+      // Remove from gallery
+      const galleryIndex = settings.gallery.indexOf(id);
+      if (galleryIndex > -1) {
+        settings.gallery.splice(galleryIndex, 1);
+      }
+
+      // Remove from clientLogos
+      const clientLogoIndex = settings.clientLogos.indexOf(id);
+      if (clientLogoIndex > -1) {
+        settings.clientLogos.splice(clientLogoIndex, 1);
+      }
       await settings.save();
     }
 
