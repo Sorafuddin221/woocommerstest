@@ -204,16 +204,26 @@ const ThemeOptionsPage = () => {
     e.preventDefault();
     if (!settings) return;
 
+    console.log('Submitting theme settings...');
+
     const updatedSettings = { ...settings };
 
     try {
+      console.log('Checking for header logo file...', headerLogoFile);
       if (headerLogoFile) {
+        console.log('Uploading header logo...');
         updatedSettings.headerLogoUrl = await uploadImage(headerLogoFile);
-      }
-      if (faviconFile) {
-        updatedSettings.faviconUrl = await uploadImage(faviconFile);
+        console.log('Header logo uploaded, URL:', updatedSettings.headerLogoUrl);
       }
 
+      console.log('Checking for favicon file...', faviconFile);
+      if (faviconFile) {
+        console.log('Uploading favicon...');
+        updatedSettings.faviconUrl = await uploadImage(faviconFile);
+        console.log('Favicon uploaded, URL:', updatedSettings.faviconUrl);
+      }
+
+      console.log('Sending PUT request to /api/settings/theme with settings:', updatedSettings);
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -221,6 +231,8 @@ const ThemeOptionsPage = () => {
       });
 
       const data = await response.json();
+      console.log('PUT request response:', data);
+
       if (!response.ok) {
         throw new Error(data.message || 'Failed to save settings');
       }
@@ -231,6 +243,7 @@ const ThemeOptionsPage = () => {
       alert('Theme settings saved!');
     } catch (err: any) {
       setError(err.message);
+      console.error('Error saving settings:', err);
       alert(`Error saving settings: ${err.message}`);
     }
   };
@@ -374,7 +387,11 @@ const ThemeOptionsPage = () => {
                 onChange={handleHeaderLogoChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-light-700 leading-tight focus:outline-none focus:shadow-outline"
               />
-              {headerLogoPreview && <img src={headerLogoPreview} alt="Header Logo" className="mt-4 h-20" />}
+              {headerLogoPreview ? (
+                <img src={headerLogoPreview} alt="Header Logo" className="mt-4 h-20" />
+              ) : settings.headerLogoUrl && (
+                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${settings.headerLogoUrl}`} alt="Header Logo" className="mt-4 h-20" />
+              )}
             </div>
             <div className="mb-4 ">
               <label htmlFor="headerLogoText" className="block text-light-700 text-sm font-bold mb-2">Logo Text:</label>
@@ -424,7 +441,7 @@ const ThemeOptionsPage = () => {
                   {settings.heroSlides && settings.heroSlides.map((slide, index) => (
                     <div key={slide._id || index} className="border p-4 rounded-lg flex items-center justify-between">
                       <div className="flex items-center">
-                        {slide.image && <Image src={slide.image || '/img/placeholder.jpg'} alt={slide.title} width={50} height={50} className="mr-4 rounded" />}
+                        {slide.image && <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.image}`} alt={slide.title} width={50} height={50} className="mr-4 rounded" />}
                         <span>{slide.title}</span>
                       </div>
                       <div>
