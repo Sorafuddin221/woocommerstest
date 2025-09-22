@@ -64,7 +64,7 @@ const HeroSection = () => {
             </div>
             {/* Right Image */}
             <div className="w-full md:w-1/2 flex items-center justify-center animate-slide-in-right">
-              <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${slide.image}`} alt={slide.title} width={300} height={300} className="w-full max-w-xs md:max-w-lg object-contain hover:scale-105 transition-transform duration-300" />
+              <Image src={slide.image} alt={slide.title} width={300} height={300} className="w-full max-w-xs md:max-w-lg object-contain hover:scale-105 transition-transform duration-300" />
             </div>
           </div>
         </div>

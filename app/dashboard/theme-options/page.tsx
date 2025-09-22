@@ -106,47 +106,7 @@ const ThemeOptionsPage = () => {
     }
   };
 
-  const handleAddSlide = async () => {
-    if (!settings) return;
-    let imageUrl = newSlideData.image || '';
-    try {
-      if (slideFile) {
-        imageUrl = await uploadImage(slideFile);
-      }
-      const slideToAdd: HeroSlide = {
-        image: imageUrl,
-        title: newSlideData.title || '',
-        subtitle: newSlideData.subtitle || '',
-        ctaButtonText: newSlideData.ctaButtonText || '',
-        ctaButtonLink: newSlideData.ctaButtonLink || '',
-      };
-      setSettings((prev) => (prev ? { ...prev, heroSlides: [...(prev.heroSlides || []), slideToAdd] } : null));
-      setNewSlideData({ image: '', title: '', subtitle: '', ctaButtonText: '', ctaButtonLink: '' });
-      setSlideFile(null);
-      setSlidePreview(null);
-    } catch (err: any) {
-      alert(`Error adding slide: ${err.message}`);
-    }
-  };
 
-  const handleUpdateSlide = async () => {
-    if (!settings || !editingSlide) return;
-    let imageUrl = editingSlide.image;
-    try {
-      if (slideFile) {
-        imageUrl = await uploadImage(slideFile);
-      }
-      const updatedSlide = { ...editingSlide, image: imageUrl };
-      setSettings((prev) =>
-        prev ? { ...prev, heroSlides: (prev.heroSlides || []).map((s) => (s._id === updatedSlide._id ? updatedSlide : s)) } : null
-      );
-      setEditingSlide(null);
-      setSlideFile(null);
-      setSlidePreview(null);
-    } catch (err: any) {
-      alert(`Error updating slide: ${err.message}`);
-    }
-  };
 
   const handleEditSlide = (slide: HeroSlide) => {
     setEditingSlide(slide);
@@ -240,6 +200,30 @@ const ThemeOptionsPage = () => {
         }
       }
 
+      if (slideFile) {
+        try {
+          const imageUrl = await uploadImage(slideFile);
+          if (editingSlide) {
+            const updatedSlide = { ...editingSlide, image: imageUrl };
+            updatedSettings.heroSlides = (updatedSettings.heroSlides || []).map((s) =>
+              s._id === updatedSlide._id ? updatedSlide : s
+            );
+          } else {
+            const slideToAdd = {
+              image: imageUrl,
+              title: newSlideData.title || '',
+              subtitle: newSlideData.subtitle || '',
+              ctaButtonText: newSlideData.ctaButtonText || '',
+              ctaButtonLink: newSlideData.ctaButtonLink || '',
+            };
+            updatedSettings.heroSlides = [...(updatedSettings.heroSlides || []), slideToAdd];
+          }
+        } catch (uploadError: any) {
+          setUploadError(uploadError.message);
+          return;
+        }
+      }
+
       console.log('Sending PUT request to /api/settings/theme with settings:', updatedSettings);
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/theme`, {
         method: 'PUT',
@@ -257,6 +241,10 @@ const ThemeOptionsPage = () => {
       setSettings(updatedSettings);
       setHeaderLogoFile(null);
       setFaviconFile(null);
+      setSlideFile(null);
+      setSlidePreview(null);
+      setEditingSlide(null);
+      setNewSlideData({ image: '', title: '', subtitle: '', ctaButtonText: '', ctaButtonLink: '' });
       alert('Theme settings saved!');
     } catch (err: any) {
       setError(err.message);
@@ -545,23 +533,6 @@ const ThemeOptionsPage = () => {
                 />
               </div>
               <div className="md:col-span-2">
-                {editingSlide ? (
-                  <button
-                    type="button"
-                    onClick={handleUpdateSlide}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Update Slide
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleAddSlide}
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  >
-                    Add Slide
-                  </button>
-                )}
               </div>
             </div>
           </>
