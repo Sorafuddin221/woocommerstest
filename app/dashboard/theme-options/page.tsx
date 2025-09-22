@@ -11,6 +11,7 @@ const ThemeOptionsPage = () => {
   const [settings, setSettings] = useState<ThemeSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // State for Add/Edit Modals
   const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
@@ -211,16 +212,26 @@ const ThemeOptionsPage = () => {
     try {
       console.log('Checking for header logo file...', headerLogoFile);
       if (headerLogoFile) {
-        console.log('Uploading header logo...');
-        updatedSettings.headerLogoUrl = await uploadImage(headerLogoFile);
-        console.log('Header logo uploaded, URL:', updatedSettings.headerLogoUrl);
+        try {
+          console.log('Uploading header logo...');
+          updatedSettings.headerLogoUrl = await uploadImage(headerLogoFile);
+          console.log('Header logo uploaded, URL:', updatedSettings.headerLogoUrl);
+        } catch (uploadError: any) {
+          setUploadError(uploadError.message);
+          return;
+        }
       }
 
       console.log('Checking for favicon file...', faviconFile);
       if (faviconFile) {
-        console.log('Uploading favicon...');
-        updatedSettings.faviconUrl = await uploadImage(faviconFile);
-        console.log('Favicon uploaded, URL:', updatedSettings.faviconUrl);
+        try {
+          console.log('Uploading favicon...');
+          updatedSettings.faviconUrl = await uploadImage(faviconFile);
+          console.log('Favicon uploaded, URL:', updatedSettings.faviconUrl);
+        } catch (uploadError: any) {
+          setUploadError(uploadError.message);
+          return;
+        }
       }
 
       console.log('Sending PUT request to /api/settings/theme with settings:', updatedSettings);
@@ -392,6 +403,8 @@ const ThemeOptionsPage = () => {
               ) : settings.headerLogoUrl && (
                 <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${settings.headerLogoUrl}`} alt="Header Logo" className="mt-4 h-20" />
               )}
+              {uploadError && <p className="text-red-500 text-xs italic">{uploadError}</p>}
+              <p className="text-gray-600 text-xs italic mt-2">If the image is not updating, please check your Cloudinary credentials in the .env.local file.</p>
             </div>
             <div className="mb-4 ">
               <label htmlFor="headerLogoText" className="block text-light-700 text-sm font-bold mb-2">Logo Text:</label>
