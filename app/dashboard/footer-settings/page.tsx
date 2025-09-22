@@ -115,6 +115,10 @@ const FooterSettingsPage = () => {
     try {
       const updatedSettings = { ...settings };
 
+      // Ensure gallery and clientLogos are initialized
+      if (!updatedSettings.gallery) updatedSettings.gallery = [];
+      if (!updatedSettings.clientLogos) updatedSettings.clientLogos = [];
+
       // Process gallery images
       const newGallery = await Promise.all(galleryFiles.map(async (file, index) => {
         if (file) {
