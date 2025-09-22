@@ -73,13 +73,14 @@ const FooterSettingsPage = () => {
   const handleGalleryFileChange = (index: number) => createChangeHandler(index, galleryFiles, setGalleryFiles, galleryPreviews, setGalleryPreviews);
   const handleLogoFileChange = (index: number) => createChangeHandler(index, logoFiles, setLogoFiles, logoPreviews, setLogoPreviews);
 
-  const createDeleteHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void, settingsKey: 'gallery' | 'clientLogos') => () => {
+  const createDeleteHandler = (index: number, files: (File | null)[], setFiles: (files: (File | null)[]) => void, previews: (string | null)[], setPreviews: (previews: (string | null)[]) => void, settingsKey: 'gallery' | 'clientLogos') => async () => {
     if (confirm('Are you sure you want to delete this image?')) {
       const newFiles = [...files];
       newFiles[index] = null;
       setFiles(newFiles);
 
       const newPreviews = [...previews];
+      const imageUrlToDelete = newPreviews[index];
       newPreviews[index] = null;
       setPreviews(newPreviews);
 
@@ -90,6 +91,20 @@ const FooterSettingsPage = () => {
         newSettings[settingsKey] = newArray;
         return newSettings;
       });
+
+      if (imageUrlToDelete) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer/${encodeURIComponent(imageUrlToDelete)}`, {
+            method: 'DELETE',
+          });
+          if (!res.ok) {
+            throw new Error('Failed to delete image from database');
+          }
+        } catch (error) {
+          console.error('Error deleting image from database:', error);
+          alert('Error deleting image from database. Please try again.');
+        }
+      }
     }
   };
 
