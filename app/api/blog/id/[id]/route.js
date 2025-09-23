@@ -1,13 +1,22 @@
 import connectDB from '@/lib/db';
 import BlogPost from '@/lib/models/BlogPost';
 import { NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 
 export async function GET(request, { params }) {
   await connectDB();
   const { id } = params;
 
   try {
-    const blogPost = await BlogPost.findById(id);
+    let blogPost;
+    // Check if the id is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      blogPost = await BlogPost.findById(id);
+    } else {
+      // If not a valid ObjectId, assume it's a slug
+      blogPost = await BlogPost.findOne({ slug: id });
+    }
+
     if (!blogPost) {
       return NextResponse.json(
         { message: 'Blog post not found' },
