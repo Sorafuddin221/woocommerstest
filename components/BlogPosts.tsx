@@ -8,6 +8,13 @@ interface BlogPostsProps {
 }
 
 const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
+  const getCorrectImageUrl = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
+  };
+
   return (
     <section className="bg-white py-12">
         <div className="container mx-auto px-4">
@@ -18,7 +25,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {items.slice(0, 3).map((blogPost) => (
                     <div key={blogPost.slug} className="bg-white rounded-lg shadow-lg overflow-hidden relative">
-                        <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${blogPost.image}`} alt={blogPost.title} width={400} height={250} className="w-full h-auto object-cover"/>
+                        <img src={getCorrectImageUrl(blogPost.image || '/img/placeholder.jpg')}  alt={blogPost.title} width={400} height={250} className="w-full h-auto object-cover"/>
                         <div className="blog-date-overlay">
                             <p className="font-bold text-lg">{new Date(blogPost.date).toLocaleDateString(undefined, { day: 'numeric' })}</p>
                             <p className="text-xs font-normal mt-0.5">{new Date(blogPost.date).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}</p>
