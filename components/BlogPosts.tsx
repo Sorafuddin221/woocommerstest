@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,6 +10,19 @@ interface BlogPostsProps {
 }
 
 const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
+  const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
+  const toggleExpand = (postSlug: string) => {
+    setExpandedPosts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(postSlug)) {
+        newSet.delete(postSlug);
+      } else {
+        newSet.add(postSlug);
+      }
+      return newSet;
+    });
+  };
+
   const getCorrectImageUrl = (url: string) => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
@@ -33,10 +48,17 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
                         <div className="p-6">
                             <p className="text-xs text-gray-500 font-semibold uppercase mb-1">{blogPost.category}</p>
                             <h3 className="text-xl font-bold mb-2">{blogPost.title}</h3>
-                            <p className="text-sm text-gray-600 leading-relaxed mb-4">{blogPost.excerpt}</p>
-                            <Link href={`/blog/${blogPost.slug}`} className="inline-block bg-[#f7931e] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors">
-                                READ MORE
-                            </Link>
+                            {expandedPosts.has(blogPost.slug) ? (
+                                <div dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} className="text-sm text-gray-600 leading-relaxed mb-4" />
+                            ) : (
+                                <p className="text-sm text-gray-600 leading-relaxed mb-4">{blogPost.excerpt}</p>
+                            )}
+                            <button
+                                onClick={() => toggleExpand(blogPost.slug)}
+                                className="inline-block bg-[#f7931e] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors"
+                            >
+                                {expandedPosts.has(blogPost.slug) ? 'READ LESS' : 'READ MORE'}
+                            </button>
                         </div>
                     </div>
                 ))}
