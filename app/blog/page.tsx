@@ -9,6 +9,7 @@ import { BlogPost, Product, Settings } from '@/lib/interfaces';
 
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [recentBlogPosts, setRecentBlogPosts] = useState<BlogPost[]>([]);
@@ -100,6 +101,18 @@ export default function BlogPage() {
     fetchRecentBlogPosts();
     fetchRecentProducts();
   }, [searchTerm, selectedCategory, currentPage]);
+
+  const toggleExpand = (postId: string) => {
+    setExpandedPosts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(postId)) {
+        newSet.delete(postId);
+      } else {
+        newSet.add(postId);
+      }
+      return newSet;
+    });
+  };
 
   const getCorrectImageUrl = (url: string) => {
     if (url.startsWith('http://') || url.startsWith('https://')) {
@@ -206,8 +219,17 @@ export default function BlogPage() {
                 <div className="p-6">
                   <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{blogPost.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{blogPost.excerpt}</p>
-                  <Link href={`/blog/${blogPost._id}`} className="inline-block mt-4 text-sm font-semibold text-white bg-orange-500 px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">READ MORE</Link>
+                  {expandedPosts.has(blogPost._id) ? (
+                    <div dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} className="text-gray-600 leading-relaxed" />
+                  ) : (
+                    <p className="text-gray-600 leading-relaxed">{blogPost.excerpt}</p>
+                  )}
+                  <button
+                    onClick={() => toggleExpand(blogPost._id)}
+                    className="inline-block mt-4 text-sm font-semibold text-white bg-orange-500 px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
+                  >
+                    {expandedPosts.has(blogPost._id) ? 'READ LESS' : 'READ MORE'}
+                  </button>
                 </div>
               </div>
             ))}
