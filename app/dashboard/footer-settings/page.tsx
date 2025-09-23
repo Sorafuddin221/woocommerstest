@@ -126,7 +126,7 @@ const FooterSettingsPage = () => {
         } else {
           return updatedSettings.gallery?.[index] || null; // Ensure it's string or null
         }
-      }))).filter(Boolean) as (string | null)[]; // Explicitly cast
+      }))) as (string | null)[];
       updatedSettings.gallery = newGallery;
 
       // Process client logos
@@ -136,7 +136,7 @@ const FooterSettingsPage = () => {
         } else {
           return updatedSettings.clientLogos?.[index] || null; // Ensure it's string or null
         }
-      }))).filter(Boolean) as (string | null)[]; // Explicitly cast
+      }))) as (string | null)[];
       updatedSettings.clientLogos = newClientLogos;
 
       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
