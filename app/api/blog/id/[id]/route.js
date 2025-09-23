@@ -4,10 +4,11 @@ import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 
 export async function GET(request, { params }) {
-  await connectDB();
   const { id } = params;
 
   try {
+    await connectDB(); // Moved inside the try block
+
     let blogPost;
     // Check if the id is a valid MongoDB ObjectId
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -25,6 +26,7 @@ export async function GET(request, { params }) {
     }
     return NextResponse.json(blogPost);
   } catch (error) {
+    console.error('Database Error:', error); // Log the actual error
     return NextResponse.json(
       { message: 'Server error', error: error.message },
       { status: 500 }
