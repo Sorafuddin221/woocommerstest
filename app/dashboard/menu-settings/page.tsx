@@ -56,7 +56,7 @@ const MenuSettingsPage = () => {
       const availablePages: Page[] = [
         { name: 'Home', path: '/' },
         { name: 'Shop', path: '/products' },
-        { name: 'Blog', path: '/blogs' },
+        { name: 'Blog', path: '/blog' },
         { name: 'Contact', path: '/contact' },
       ];
       setPages(availablePages);
