@@ -4,6 +4,13 @@ import BlogPageTemplate from '@/components/BlogPageTemplate';
 import HandpickedItems from '@/components/HandpickedItems';
 import { Product, BlogPost } from '@/lib/interfaces';
 
+const getCorrectImageUrl = (url: string) => {
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
+};
+
 async function getBlogPost(id: string): Promise<BlogPost | null> {
   if (!process.env.NEXT_PUBLIC_BACKEND_URL) {
     return null;
@@ -35,7 +42,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: [{ url: `${process.env.NEXT_PUBLIC_BACKEND_URL}${post.image}` }],
+      images: [{ url: getCorrectImageUrl(post.image) }],
     },
   };
 }
@@ -130,7 +137,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": blogPost.title,
-    "image": `${process.env.NEXT_PUBLIC_BACKEND_URL}${blogPost.image}`,
+    "image": getCorrectImageUrl(blogPost.image),
     "author": {
       "@type": "Person",
       "name": blogPost.author || "Admin"
@@ -175,7 +182,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
               <ul className="space-y-4 text-gray-700">
                   {recentPosts.map((post) => (
                     <li key={post._id} className="flex items-center gap-3">
-                      <Image src={typeof post.image === 'string' && post.image ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${post.image}` : '/img/placeholder.jpg'} alt={post.title} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
+                      <Image src={typeof post.image === 'string' && post.image ? getCorrectImageUrl(post.image) : '/img/placeholder.jpg'} alt={post.title} width={64} height={64} className="w-16 h-16 rounded-lg object-cover" />
                       <div>
                         <h4 className="text-sm font-medium"><Link href={`/blog/${post._id}`}>{post.title}</Link></h4>
                         <p className="text-xs text-gray-500">{new Date(post.date).toLocaleDateString()}</p>
@@ -188,7 +195,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
 
           <main className="md:w-3/4">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden p-6">
-              <Image src={typeof blogPost.image === 'string' && blogPost.image ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${blogPost.image}` : '/img/placeholder.jpg'} alt={blogPost.title} width={800} height={450} className="w-full h-auto object-cover mb-6" />
+              <Image src={typeof blogPost.image === 'string' && blogPost.image ? getCorrectImageUrl(blogPost.image) : '/img/placeholder.jpg'} alt={blogPost.title} width={800} height={450} className="w-full h-auto object-cover mb-6" />
               <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
               <h1 className="text-3xl font-bold text-gray-900 mb-4">{blogPost.title}</h1>
               <div dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} />
