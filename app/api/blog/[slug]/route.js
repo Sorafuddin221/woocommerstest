@@ -4,10 +4,10 @@ import { NextResponse } from 'next/server';
 import { slugify } from '@/lib/utils'; // Import slugify
 
 export async function GET(request, { params }) {
-  await connectDB();
   const { slug } = params;
 
   try {
+    await connectDB();
     const blogPost = await BlogPost.findOne({ slug });
     if (!blogPost) {
       return NextResponse.json(
@@ -25,11 +25,11 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-  await connectDB();
   const { slug } = params;
   const body = await request.json();
 
   try {
+    await connectDB();
     const blogPost = await BlogPost.findOne({ slug });
     if (!blogPost) {
       return NextResponse.json(
@@ -66,10 +66,10 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  await connectDB();
   const { slug } = params;
 
   try {
+    await connectDB();
     const blogPost = await BlogPost.findOne({ slug });
     if (!blogPost) {
       return NextResponse.json(
