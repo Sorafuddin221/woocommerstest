@@ -16,7 +16,7 @@ export async function GET(request) {
   }
 }
 
-export async function PUT(request) {
+export async function POST(request) {
   console.log('PUT /api/settings/footer received.');
   try {
     console.log('Attempting to connect to DB...');

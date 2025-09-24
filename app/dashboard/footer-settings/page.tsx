@@ -145,7 +145,7 @@ const FooterSettingsPage = () => {
       console.log('Sending updated settings to backend:', updatedSettings);
 
       const saveResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
-        method: 'PUT',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedSettings),
       });
