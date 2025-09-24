@@ -17,6 +17,7 @@ export async function GET(request) {
 }
 
 export async function PUT(request) {
+  console.log('PUT /api/settings/footer received.');
   await connectDB();
   const body = await request.json();
 
