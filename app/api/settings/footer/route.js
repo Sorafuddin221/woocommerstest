@@ -49,7 +49,7 @@ export async function PUT(request) {
 
     const updatedSettings = await settings.save();
     return NextResponse.json(updatedSettings);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Footer Settings PUT Error:', error);
     return NextResponse.json(
       { message: 'Server error', error: error.message || 'Failed to update footer settings' },
