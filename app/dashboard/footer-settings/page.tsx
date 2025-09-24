@@ -124,7 +124,7 @@ const FooterSettingsPage = () => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.gallery?.[index] || null; // Ensure it's string or null
+          return galleryPreviews[index] || null; // Use the preview URL if no new file is uploaded
         }
       }))) as (string | null)[];
       updatedSettings.gallery = newGallery;
@@ -134,7 +134,7 @@ const FooterSettingsPage = () => {
         if (file) {
           return await uploadImage(file);
         } else {
-          return updatedSettings.clientLogos?.[index] || null; // Ensure it's string or null
+          return logoPreviews[index] || null; // Use the preview URL if no new file is uploaded
         }
       }))) as (string | null)[];
       updatedSettings.clientLogos = newClientLogos;
