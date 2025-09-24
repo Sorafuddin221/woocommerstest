@@ -20,6 +20,7 @@ export async function PUT(request) {
   console.log('PUT /api/settings/footer received.');
   await connectDB();
   const body = await request.json();
+  console.log('Request body:', body);
 
   try {
     let settings = await FooterSettings.findOne();
@@ -47,7 +48,9 @@ export async function PUT(request) {
       settings.clientLogos = body.clientLogos.filter(url => url !== '' && url !== null);
     }
 
+    console.log('Saving settings to the database...');
     const updatedSettings = await settings.save();
+    console.log('Settings saved successfully:', updatedSettings);
     return NextResponse.json(updatedSettings);
   } catch (error) {
     console.error('Footer Settings PUT Error:', error);
