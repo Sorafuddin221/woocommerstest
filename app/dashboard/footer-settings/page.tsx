@@ -44,9 +44,12 @@ const FooterSettingsPage = () => {
       body: formData,
     });
     if (!response.ok) {
-      throw new Error('Image upload failed');
+      const errorData = await response.json();
+      console.error('Image upload failed response:', errorData);
+      throw new Error(errorData.message || 'Image upload failed');
     }
     const data = await response.json();
+    console.log('Upload API response:', data);
     if (data.success && data.urls && data.urls.length > 0) {
       return data.urls[0];
     }
@@ -139,15 +142,25 @@ const FooterSettingsPage = () => {
       }))) as (string | null)[];
       updatedSettings.clientLogos = newClientLogos;
 
-      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
+      console.log('Sending updated settings to backend:', updatedSettings);
+
+      const saveResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedSettings),
       });
 
-      setSettings(updatedSettings);
+      if (!saveResponse.ok) {
+        const errorData = await saveResponse.json();
+        throw new Error(errorData.message || 'Failed to save footer settings');
+      }
+
+      const savedSettings = await saveResponse.json();
+      console.log('Backend response after saving:', savedSettings);
+
+      setSettings(savedSettings); // Update settings with the response from the backend
       alert('Footer settings saved successfully!');
-      window.location.reload(); // Reload page to reflect changes on frontend
+      // window.location.reload(); // Temporarily commented out for debugging
     } catch (error) {
       console.error('Error saving footer settings:', error);
       alert(`Error saving settings: ${error}`);
