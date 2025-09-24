@@ -35,7 +35,9 @@ export async function POST(request) {
   };
 
   try {
+    console.log('Uploading to Cloudinary...');
     const result = await uploadStream(buffer);
+    console.log('Cloudinary upload result:', result);
     return NextResponse.json({ success: true, urls: [result.secure_url] });
   } catch (error) {
     console.error('Upload error:', error);
