@@ -16,14 +16,21 @@ const uploadToCloudinary = (file: File): Promise<string> => {
     const stream = cloudinary.uploader.upload_stream({ folder: 'my-affiliatapp' }, (error, result) => {
       if (error) {
         console.error('Cloudinary Error:', error);
-        return reject(error);
+        return reject(new Error(error.message || 'Cloudinary upload failed'));
       }
       if (result) {
         resolve(result.secure_url);
+      } else {
+        reject(new Error('Cloudinary upload failed: No result received.'));
       }
     });
 
-    stream.end(buffer);
+    try {
+      stream.end(buffer);
+    } catch (streamErr) {
+      console.error('Stream End Error:', streamErr);
+      reject(new Error('Failed to end upload stream.'));
+    }
   });
 };
 
@@ -45,8 +52,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: false, error: 'No files found' }, { status: 400 });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload Error:', error);
-    return NextResponse.json({ success: false, error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Upload failed' }, { status: 500 });
   }
 }
