@@ -69,7 +69,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/settings/footer`);
         if (res.ok) {
           const data = await res.json();
-          console.log('Footer settings data:', data);
+          console.log('Footer settings data received by frontend:', data);
           setFooterSettings(data);
         }
       } catch (error: any) {
