@@ -43,12 +43,12 @@ const FooterSettingsPage = () => {
       method: 'POST',
       body: formData,
     });
+    const responseData = await response.json();
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Image upload failed response:', errorData);
-      throw new Error(errorData.message || 'Image upload failed');
+      console.error('Image upload failed response:', responseData);
+      throw new Error(responseData.message || 'Image upload failed');
     }
-    const data = await response.json();
+    const data = responseData;
     console.log('Upload API response:', data);
     if (data.success && data.urls && data.urls.length > 0) {
       return data.urls[0];
@@ -150,12 +150,13 @@ const FooterSettingsPage = () => {
         body: JSON.stringify(updatedSettings),
       });
 
+      const responseData = await saveResponse.json();
+
       if (!saveResponse.ok) {
-        const errorData = await saveResponse.json();
-        throw new Error(errorData.message || 'Failed to save footer settings');
+        throw new Error(responseData.message || 'Failed to save footer settings');
       }
 
-      const savedSettings = await saveResponse.json();
+      const savedSettings = responseData;
       console.log('Backend response after saving:', savedSettings);
 
       setSettings(savedSettings); // Update settings with the response from the backend
