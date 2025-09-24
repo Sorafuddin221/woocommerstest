@@ -46,11 +46,6 @@ export async function PUT(request) {
       settings.clientLogos = body.clientLogos.filter(url => url !== '' && url !== null);
     }
 
-  } catch (error: any) {
-    console.error('Footer Settings PUT Error:', error);
-    return NextResponse.json(
-      { message: 'Server error', error: error.message || 'Failed to update footer settings' },
-      { status: 500 }
-    );
-  }
+    const updatedSettings = await settings.save();
+    return NextResponse.json(updatedSettings);
 }
