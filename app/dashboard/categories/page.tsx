@@ -64,7 +64,7 @@ const CategoriesPage: React.FC = () => {
 
       const uploadData = await uploadResponse.json();
       console.log('Upload data:', uploadData);
-      const imageUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}${uploadData.urls[0]}`;
+      const imageUrl = uploadData.urls[0];
 
       const categoryResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
         method: 'POST',

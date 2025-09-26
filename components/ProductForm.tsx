@@ -40,6 +40,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
       const brandsData = await brandsRes.json();
       const shopDepartmentsData = await shopDepartmentsRes.json();
 
+      console.log('Categories data:', categoriesData);
+
       setCategories(categoriesData.map((cat: any) => cat.name));
       setBrands(brandsData);
       setShopDepartments(shopDepartmentsData);
