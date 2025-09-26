@@ -54,6 +54,9 @@ const Sidebar = () => {
     { name: 'Menu Settings', href: '/dashboard/menu-settings', icon: (
       <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
     )},
+    { name: 'Icon Settings', href: '/dashboard/icon-settings', icon: (
+      <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 16v-2m0-10v2m0 6v2m-6-4h2m10 0h2M6 12H4m16 0h-2m-5-5v2m0 6v2m-6-4h2m10 0h2" /></svg>
+    )},
   ];
 
   const userNavItems = [

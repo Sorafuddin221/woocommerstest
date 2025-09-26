@@ -182,3 +182,10 @@ export interface ThemeSettings {
   clientLogos?: ClientLogo[];
   socialLinks?: SocialLink[];
 }
+
+export interface Icon {
+  _id?: string;
+  icon: string;
+  title: string;
+  description: string;
+}
