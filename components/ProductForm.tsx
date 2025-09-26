@@ -149,9 +149,25 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
     const form = formRef.current;
     if (form) {
       const formData = new FormData(form);
+      const newCategoryName = formData.get('newCategory') as string;
+
+      // If a new category is being added, save it first
+      if (showNewCategoryInput && newCategoryName) {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newCategoryName, imageUrl: null }),
+          });
+        } catch (error) {
+          console.error('Failed to save new category:', error);
+          // Optionally, alert the user
+        }
+      }
+
       const productData = {
         title: formData.get('title') as string,
-        category: showNewCategoryInput ? formData.get('newCategory') as string : formData.get('category') as string,
+        category: showNewCategoryInput ? newCategoryName : formData.get('category') as string,
         brand: showNewBrandInput ? formData.get('newBrand') as string : formData.get('brand') as string,
         shopDepartment: showNewShopDepartmentInput ? formData.get('newShopDepartment') as string : formData.get('shopDepartment') as string,
         price: formData.get('price') as string,
@@ -180,6 +196,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
           <input type="text" name="title" placeholder="title" defaultValue={initialData?.title} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
           
           {/* Category Selection */}
+          <div>
+            <p className="text-white">Found {categories.length} categories.</p>
           {!showNewCategoryInput ? (
             <select 
               name="category" 
