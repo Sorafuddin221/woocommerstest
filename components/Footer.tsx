@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { ContactSettings, ShopDepartment, FooterSettings } from '@/lib/interfaces';
+import { ContactSettings, FooterSettings } from '@/lib/interfaces';
 
 const Footer = () => {
 const [contactSettings, setContactSettings] = useState<ContactSettings>({
@@ -12,7 +12,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
     openingHours: '',
     formTitle: ''
   });
-  const [shopDepartments, setShopDepartments] = useState<ShopDepartment[]>([]);
+  const [shopDepartments, setShopDepartments] = useState<string[]>([]);
   const [footerSettings, setFooterSettings] = useState<FooterSettings>({
     gallery: [],
     newsletterText: '',
