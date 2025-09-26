@@ -197,37 +197,40 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
           
           {/* Category Selection */}
           <div>
-            <p className="text-white">Found {categories.length} categories.</p>
-          {!showNewCategoryInput ? (
-            <select 
-              name="category" 
-              defaultValue={initialData?.category} 
-              className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm text-custom-text-secondary"
-              onChange={(e) => {
-                if (e.target.value === '__addNew__') {
-                  setShowNewCategoryInput(true);
-                }
-              }}
-            >
-              <option value="">Choose a Category</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-              <option value="__addNew__">+ Add New Category</option>
-            </select>
-          ) : (
-            <input 
-              type="text" 
-              name="newCategory" 
-              placeholder="Enter new category name" 
-              className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
-              onBlur={(e) => {
-                if (!e.target.value) {
-                  setShowNewCategoryInput(false); // Revert if empty
-                }
-              }}
-            />
-          )}
+            <>
+              <p className="text-white">Found {categories.length} categories.</p>
+              {!showNewCategoryInput ? (
+                <select 
+                  name="category" 
+                  defaultValue={initialData?.category} 
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm text-custom-text-secondary"
+                  onChange={(e) => {
+                    if (e.target.value === '__addNew__') {
+                      setShowNewCategoryInput(true);
+                    }
+                  }}
+                >
+                  <option value="">Choose a Category</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                  <option value="__addNew__">+ Add New Category</option>
+                </select>
+              ) : (
+                <input 
+                  type="text" 
+                  name="newCategory" 
+                  placeholder="Enter new category name" 
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+                  onBlur={(e) => {
+                    if (!e.target.value) {
+                      setShowNewCategoryInput(false); // Revert if empty
+                    }
+                  }}
+                />
+              )}
+            </>
+          </div>
 
           {/* Brand Selection */}
           {!showNewBrandInput ? (
