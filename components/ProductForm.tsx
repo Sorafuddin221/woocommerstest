@@ -27,7 +27,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
   const fetchData = async () => {
     try {
       const [categoriesRes, brandsRes, shopDepartmentsRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/categories`),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/categories`),
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/brands`),
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/shopDepartments`),
       ]);
@@ -40,7 +40,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
       const brandsData = await brandsRes.json();
       const shopDepartmentsData = await shopDepartmentsRes.json();
 
-      setCategories(categoriesData);
+      setCategories(categoriesData.map((cat: any) => cat.name));
       setBrands(brandsData);
       setShopDepartments(shopDepartmentsData);
     } catch (error: any) {

@@ -134,9 +134,9 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
             <h3 className="font-bold text-lg mb-4">Shop Departments</h3>
             <ul className="space-y-3 text-gray-400 text-sm">
               {shopDepartments.map((department) => (
-                <li key={department._id}>
-                  <Link href={`/shop/${department.name}`} className="hover:text-white transition-colors">
-                    &raquo; {department.name}
+                <li key={department}>
+                  <Link href={`/shop/${department}`} className="hover:text-white transition-colors">
+                    &raquo; {department}
                   </Link>
                 </li>
               ))}
