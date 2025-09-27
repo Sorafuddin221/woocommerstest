@@ -54,6 +54,7 @@ export async function PUT(request, { params }) {
     if (body.image != null) blogPost.image = body.image;
     if (body.category != null) blogPost.category = body.category;
     if (body.excerpt != null) blogPost.excerpt = body.excerpt;
+    if (body.affiliateLink != null) blogPost.affiliateLink = body.affiliateLink;
 
     const updatedBlogPost = await blogPost.save();
     return NextResponse.json(updatedBlogPost);

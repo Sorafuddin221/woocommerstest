@@ -69,6 +69,7 @@ export async function POST(request) {
     image: body.image,
     category: body.category,
     excerpt: body.excerpt,
+    affiliateLink: body.affiliateLink,
   });
 
   try {
