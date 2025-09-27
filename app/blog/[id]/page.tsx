@@ -165,18 +165,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
             <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
               <input type="text" placeholder="Search..." className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" />
             </div>
-
-            <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900">Blog Categories</h2>
-              <ul className="space-y-2 text-gray-700">
-                {categories.map((category) => (
-                  <li key={category}>
-                    <Link href={`/blog/category/${category}`} className="block p-2 rounded-lg hover:bg-gray-100 transition-colors">{category}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+            
             <div className="bg-white p-6 rounded-xl shadow-lg">
               <h2 className="text-xl font-semibold mb-4 text-gray-900">Recent posts</h2>
               <ul className="space-y-4 text-gray-700">

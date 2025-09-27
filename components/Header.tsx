@@ -116,22 +116,22 @@ const Header = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <div className="flex items-center space-x-2">
-               
+            <Link href="/" className="cursor-pointer">
+              <div className="flex items-center space-x-2">
                 {loading && <p>Loading...</p>}
                 {error && <p>Error: {error}</p>}
-               {settings &&(
-                <div className="flex flex-col items-center">
-                    
+                {settings && (
+                  <div className="flex flex-col items-center">
                     {settings.showHeaderLogoImage && typeof settings.headerLogoUrl === 'string' && settings.headerLogoUrl && (
-                            <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
-                        )}
-                        {settings.showHeaderLogoText && settings.headerLogoText && (
-                            <span className="text-3xl font-bold">{settings.headerLogoText}</span>
-                        )}
-                </div>
-               )}
-            </div>
+                      <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
+                    )}
+                    {settings.showHeaderLogoText && settings.headerLogoText && (
+                      <span className="text-3xl font-bold">{settings.headerLogoText}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </Link>
             <div className="flex items-center hide-on-small-screen">
                 <SocialIcons socialLinks={socialLinks} />
             </div>
@@ -140,19 +140,20 @@ const Header = () => {
         {/* Desktop Header */}
         <div className="hidden md:flex items-center justify-between w-full">
             {/* Logo - Aligns left on all screens */}
-            
+            <Link href="/" className="cursor-pointer">
               {loading && <p>Loading...</p>}
               {error && <p>Error: {error}</p>}
-                {settings &&(
-              <div className="flex items-center space-x-2 flex-shrink-0">
+              {settings && (
+                <div className="flex items-center space-x-2 flex-shrink-0">
                   {settings.showHeaderLogoImage && typeof settings.headerLogoUrl === 'string' && settings.headerLogoUrl && (
                     <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
-                        )}
+                  )}
                   {settings.showHeaderLogoText && settings.headerLogoText && (
-                  <span className="text-3xl font-bold">{settings.headerLogoText}</span>
-                        )}
-              </div>
-             )}             
+                    <span className="text-3xl font-bold">{settings.headerLogoText}</span>
+                  )}
+                </div>
+              )}
+            </Link>             
             {/* Search Bar - Takes full width on mobile, shrinks on larger screens */}
             <div className="w-full md:w-auto flex-grow md:max-w-xl lg:max-w-2xl mx-auto md:px-4">
               <div className="flex items-center bg-white rounded-md overflow-hidden shadow-sm">
@@ -189,12 +190,7 @@ const Header = () => {
               <div className="flex gap-3">
                 <SocialIcons socialLinks={socialLinks} />
               </div>
-
-              <Link href="/login" className="flex items-center space-x-2 group">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-300 group-hover:text-white transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </Link>
+              
             </div>
         </div>
         <div className="w-full md:hidden">
