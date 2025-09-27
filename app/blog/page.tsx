@@ -214,7 +214,7 @@ export default function BlogPage() {
         <main className="md:w-3/4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {blogPosts.map((blogPost) => (
-              <div key={blogPost._id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <Link href={`/blog/${blogPost._id}`} key={blogPost._id} className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <Image src={getCorrectImageUrl(blogPost.image)} alt={blogPost.title || 'Blog post image'} width={400} height={250} className="w-full h-64 object-cover" />
                 <div className="p-6">
                   <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
@@ -225,13 +225,21 @@ export default function BlogPage() {
                     <p className="text-gray-600 leading-relaxed">{blogPost.excerpt}</p>
                   )}
                   <button
-                    onClick={() => toggleExpand(blogPost._id)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        toggleExpand(blogPost._id);
+                    }}
                     className="inline-block mt-4 text-sm font-semibold text-white bg-orange-500 px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors"
                   >
                     {expandedPosts.has(blogPost._id) ? 'READ LESS' : 'READ MORE'}
                   </button>
+                  {expandedPosts.has(blogPost._id) && blogPost.affiliateLink && (
+                    <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-600 transition-colors ml-2">
+                        Click Here
+                    </Link>
+                  )}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
