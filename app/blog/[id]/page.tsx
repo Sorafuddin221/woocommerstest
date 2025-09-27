@@ -16,7 +16,7 @@ async function getBlogPost(id: string): Promise<BlogPost | null> {
     return null;
   }
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/id/${id}`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/id/${id}`);
     if (!response.ok) {
       return null;
     }
@@ -52,7 +52,7 @@ async function getBlogCategories(): Promise<string[]> {
     return [];
   }
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/categories`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/categories`);
     if (!response.ok) {
       return [];
     }
@@ -68,7 +68,7 @@ async function getRecentBlogPosts(): Promise<BlogPost[]> {
     return [];
   }
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog/recent`);
     if (!response.ok) {
       return [];
     }
@@ -84,7 +84,7 @@ async function getBlogPosts(): Promise<BlogPost[]> {
       return [];
     }
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog?limit=1000`, { cache: 'no-store' });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/blog?limit=1000`);
       if (!response.ok) {
         return [];
       }
@@ -105,7 +105,7 @@ async function getTopViewedProducts(): Promise<Product[]> {
     return [];
   }
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/top-viewed`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/top-viewed`);
     if (!response.ok) {
       return [];
     }
