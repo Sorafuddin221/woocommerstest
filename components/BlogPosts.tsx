@@ -39,7 +39,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {items.slice(0, 3).map((blogPost) => (
-                    <Link href={`/blog/${blogPost._id}`} key={blogPost.slug} className="bg-white rounded-lg shadow-lg overflow-hidden relative">
+                   <div key={blogPost.slug} className="bg-white rounded-lg shadow-lg overflow-hidden relative">
                         <img src={getCorrectImageUrl(blogPost.image || '/img/placeholder.jpg')}  alt={blogPost.title} width={400} height={250} className="w-full h-auto object-cover"/>
                         <div className="blog-date-overlay">
                             <p className="font-bold text-lg">{new Date(blogPost.date).toLocaleDateString(undefined, { day: 'numeric' })}</p>
@@ -65,7 +65,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
                                 </Link>
                             )}
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
         </div>
