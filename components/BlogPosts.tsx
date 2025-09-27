@@ -54,12 +54,15 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
                                 <p className="text-sm text-gray-600 leading-relaxed mb-4">{blogPost.excerpt}</p>
                             )}
                             <button
-                                onClick={() => toggleExpand(blogPost.slug)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleExpand(blogPost.slug);
+                                }}
                                 className="inline-block bg-[#f7931e] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors"
                             >
                                 {expandedPosts.has(blogPost.slug) ? 'READ LESS' : 'READ MORE'}
                             </button>
-                            {blogPost.affiliateLink && (
+                                                        {expandedPosts.has(blogPost.slug) && blogPost.affiliateLink && (
                                 <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-600 transition-colors ml-2">
                                     Click Here
                                 </Link>
