@@ -34,6 +34,7 @@ export interface BlogPost {
   excerpt: string;
   author?: string;
   content?: string;
+  affiliateLink?: string;
 }
 
 export interface Review {

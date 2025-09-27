@@ -39,7 +39,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {items.slice(0, 3).map((blogPost) => (
-                    <div key={blogPost.slug} className="bg-white rounded-lg shadow-lg overflow-hidden relative">
+                    <Link href={`/blog/${blogPost._id}`} key={blogPost.slug} className="bg-white rounded-lg shadow-lg overflow-hidden relative">
                         <img src={getCorrectImageUrl(blogPost.image || '/img/placeholder.jpg')}  alt={blogPost.title} width={400} height={250} className="w-full h-auto object-cover"/>
                         <div className="blog-date-overlay">
                             <p className="font-bold text-lg">{new Date(blogPost.date).toLocaleDateString(undefined, { day: 'numeric' })}</p>
@@ -59,8 +59,13 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
                             >
                                 {expandedPosts.has(blogPost.slug) ? 'READ LESS' : 'READ MORE'}
                             </button>
+                            {blogPost.affiliateLink && (
+                                <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-600 transition-colors ml-2">
+                                    Click Here
+                                </Link>
+                            )}
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

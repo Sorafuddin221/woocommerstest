@@ -10,6 +10,7 @@ interface BlogFormData {
   excerpt: string;
   content: string;
   author?: string;
+  affiliateLink?: string;
 }
 
 interface BlogFormProps {
@@ -70,6 +71,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }
       category: (form.elements.namedItem('category') as HTMLSelectElement).value,
       excerpt: (form.elements.namedItem('excerpt') as HTMLTextAreaElement).value,
       image: imageUrl,
+      affiliateLink: (form.elements.namedItem('affiliateLink') as HTMLInputElement).value,
     };
 
     onSubmit(blogData);
@@ -101,6 +103,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }
             )}
           </div>
           <textarea name="excerpt" placeholder="Excerpt" rows={3} defaultValue={initialData?.excerpt} className="md:col-span-2 w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"></textarea>
+          <input type="text" name="affiliateLink" placeholder="Affiliate Link" defaultValue={initialData?.affiliateLink} className="md:col-span-2 w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-custom-text-secondary mb-2">Content</label>
             <Editor content={content} onChange={setContent} />
