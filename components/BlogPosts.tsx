@@ -47,7 +47,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
                         </div>
                         <div className="p-6">
                             <p className="text-xs text-gray-500 font-semibold uppercase mb-1">{blogPost.category}</p>
-                            <h3 className="text-xl font-bold mb-2">{blogPost.title}</h3>
+                            <h3 className="text-xl text-custom-orange font-bold mb-2">{blogPost.title}</h3>
                             {expandedPosts.has(blogPost.slug) ? (
                                 <div dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} className="text-sm text-gray-600 leading-relaxed mb-4" />
                             ) : (
