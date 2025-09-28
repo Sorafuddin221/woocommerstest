@@ -80,6 +80,7 @@ const BootcampSettingsPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      console.log('Sending settings:', settings);
       await axios.post('/api/settings', settings);
       toast.success('Settings updated successfully!');
       window.location.reload();
