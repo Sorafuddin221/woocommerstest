@@ -67,7 +67,7 @@ const BootcampSettingsPage = () => {
         ...prevSettings,
         [page]: {
           ...prevSettings[page as keyof typeof prevSettings],
-          imageUrl: response.data.url,
+          imageUrl: response.data.urls[0],
         },
       }));
       toast.success('Image uploaded successfully!');
