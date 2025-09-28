@@ -37,7 +37,7 @@ const ShopDepartmentProducts: React.FC<ShopDepartmentProductsProps> = ({ items, 
 
         {/* Shop Department Products Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
-          <h3 className="text-xl font-bold mb-4 md:mb-0">Our Top {departmentName} Products</h3>
+          <h3 className="text-xl font-bold mb-4 md:mb-0 text-custom-orange">Our Top {departmentName} Products</h3>
           <div className="flex space-x-4 text-sm md:text-base">
             <button
               className={`tab-fashion-button ${activeBrand === 'All' ? 'active text-[#f7931e]' : 'text-gray-600 hover:text-[#f7931e]'}`}
@@ -83,7 +83,7 @@ const ShopDepartmentProducts: React.FC<ShopDepartmentProductsProps> = ({ items, 
               <img src={product.image || '/img/placeholder.jpg'} alt={product.name} className="mb-4 rounded-lg" />
               <div className="w-full">
                 <p className="text-xs text-gray-500 font-semibold mb-1">{product.brand}</p> {/* Display brand */}
-                <h3 className="font-bold text-lg mb-2">{product.name}</h3>
+                <h3 className="font-bold text-lg mb-2 text-custom-orange">{product.name}</h3>
                 <div className="flex justify-center mb-2">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < product.rating ? 'text-yellow-400' : 'text-gray-300'}>★</span>

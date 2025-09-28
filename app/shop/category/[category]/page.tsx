@@ -179,7 +179,7 @@ export default function ShopCategoryPage() {
                 <Image src={typeof product.image === 'string' && product.image ? product.image : '/img/placeholder.jpg'} alt={product.name || 'Product image'} width={200} height={200} className="mb-4 rounded-lg" />
                 <div className="w-full">
                   <p className="text-xs text-gray-500 font-semibold mb-1">{product.category}</p>
-                  <h3 className="font-bold text-lg mb-2">{product.name}</h3>
+                  <h3 className="font-bold text-lg mb-2 text-custom-orange">{product.name}</h3>
                   {/* Star Rating */}
                   <div className="flex justify-center mb-2">
                     {Array.from({ length: 5 }, (_, i) => (

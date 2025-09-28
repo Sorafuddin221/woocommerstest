@@ -13,7 +13,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
     <section className="bg-white py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold mb-4 md:mb-0">New Arrivals</h2>
+          <h2 className="text-3xl font-bold mb-4 md:mb-0 text-custom-orange">New Arrivals</h2>
         </div>
 
         <div id="product-list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
@@ -40,7 +40,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
               <Image src={product.image} alt={product.name || 'Product image'} width={200} height={200} className="mb-4 rounded-lg" />
               <div className="w-full">
                 <p className="text-xs text-gray-500 font-semibold mb-1">{product.category.toUpperCase()}</p>
-                <h3 className="font-bold text-lg mb-2">{product.name}</h3>
+                <h3 className="font-bold text-lg mb-2 text-custom-orange">{product.name}</h3>
                 <div className="flex justify-center mb-2">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < product.rating ? 'text-yellow-400' : 'text-gray-300'}>★</span>

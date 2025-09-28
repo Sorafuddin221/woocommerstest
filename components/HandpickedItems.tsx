@@ -14,7 +14,7 @@ const HandpickedItems: React.FC<HandpickedItemsProps> = ({ items }) => {
   return (
     <section className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">Top View Items for you</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 text-custom-orange">Top View Items for you</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 
                 {items.map((item, index) => (

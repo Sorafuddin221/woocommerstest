@@ -34,7 +34,7 @@ const BlogPosts: React.FC<BlogPostsProps> = ({ items }) => {
     <section className="bg-white py-12">
         <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold">Most Popular Blog Posts</h2>
+                <h2 className="text-3xl font-bold text-custom-orange">Most Popular Blog Posts</h2>
                 <Link href="/blog" className="text-sm font-semibold text-gray-600 hover:text-[#f7931e] transition-colors">View All Blogs</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

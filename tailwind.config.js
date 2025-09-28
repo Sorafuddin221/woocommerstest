@@ -16,6 +16,7 @@ module.exports = {
         'custom-text': '#e0e0e0',
         'custom-text-secondary': '#a0a0b0',
         'custom-hover': 'var(--custom-hover-bg)',
+        'custom-orange': '#f7931e',
       },
     },
   },
