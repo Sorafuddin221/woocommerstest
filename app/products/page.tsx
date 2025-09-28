@@ -169,7 +169,7 @@ export default function ProductsPage() {
                 />
               </div>
               <div className="flex justify-between text-sm text-gray-600 mt-2">
-                <span>Price: €{minPrice} - €{maxPrice}</span>
+                <span>Price: ${minPrice} - ${maxPrice}</span>
               </div>
             </div>
 
@@ -254,11 +254,11 @@ export default function ProductsPage() {
                   <>
                     {product.isSale ? (
                       <>
-                        <p className="text-gray-400 line-through text-sm font-medium">€{product.originalPrice}</p>
-                        <p className="text-red-600 font-bold text-xl">€{product.price}</p>
+                        <p className="text-gray-400 line-through text-sm font-medium">${product.originalPrice}</p>
+                        <p className="text-red-600 font-bold text-xl">${product.price}</p>
                       </>
                     ) : (
-                      <p className="text-gray-800 font-bold text-xl">€{product.price}</p>
+                      <p className="text-gray-800 font-bold text-xl">${product.price}</p>
                     )}
                   </>
                 </div>

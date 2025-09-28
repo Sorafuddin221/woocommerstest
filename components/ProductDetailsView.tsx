@@ -72,9 +72,9 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
           </div>
 
           {product.isSale ? (
-            <p className="text-gray-400 line-through text-xl font-medium">€{product.originalPrice}</p>
+            <p className="text-gray-400 line-through text-xl font-medium">${product.originalPrice}</p>
           ) : null}
-          <p className="text-gray-800 font-bold text-4xl mb-4">€{product.price}</p>
+          <p className="text-gray-800 font-bold text-4xl mb-4">${product.price}</p>
 
           <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: product.shortDescription || '' }} />
 

@@ -47,9 +47,9 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
                   ))}
                 </div>
                 {product.originalPrice && (
-                  <p className="text-gray-400 line-through text-sm font-medium">€{product.originalPrice.toFixed(2)}</p>
+                  <p className="text-gray-400 line-through text-sm font-medium">${product.originalPrice.toFixed(2)}</p>
                 )}
-                <p className="text-gray-800 font-bold text-xl">€{product.price.toFixed(2)}</p>
+                <p className="text-gray-800 font-bold text-xl">${product.price.toFixed(2)}</p>
               </div>
             </div>
           ))}

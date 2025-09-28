@@ -202,7 +202,7 @@ export default function BlogPage() {
                     <Link href={product.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-gray-800 hover:text-blue-600">
                       {product.name}
                     </Link>
-                    <p className="text-xs text-gray-500">€{product.price.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500">${product.price.toFixed(2)}</p>
                   </div>
                 </li>
               ))}
