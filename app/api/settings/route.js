@@ -46,3 +46,31 @@ export async function PUT(request) {
     );
   }
 }
+
+export async function POST(request) {
+  await connectDB();
+  const { productsPageHero, blogPageHero, contactPageHero } = await request.json();
+
+  try {
+    let settings = await Setting.findOne();
+
+    if (!settings) {
+      settings = await Setting.create({
+        productsPageHero,
+        blogPageHero,
+        contactPageHero,
+      });
+    } else {
+      settings.productsPageHero = productsPageHero || settings.productsPageHero;
+      settings.blogPageHero = blogPageHero || settings.blogPageHero;
+      settings.contactPageHero = contactPageHero || settings.contactPageHero;
+      await settings.save();
+    }
+    return NextResponse.json(settings);
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'Server error', error: error.message },
+      { status: 500 }
+    );
+  }
+}
