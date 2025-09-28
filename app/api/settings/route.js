@@ -49,21 +49,27 @@ export async function PUT(request) {
 
 export async function POST(request) {
   await connectDB();
-  const { productsPageHero, blogPageHero, contactPageHero } = await request.json();
+  const body = await request.json();
 
   try {
     let settings = await Setting.findOne();
 
     if (!settings) {
-      settings = await Setting.create({
-        productsPageHero,
-        blogPageHero,
-        contactPageHero,
-      });
+      settings = await Setting.create(body);
     } else {
-      settings.productsPageHero = productsPageHero || settings.productsPageHero;
-      settings.blogPageHero = blogPageHero || settings.blogPageHero;
-      settings.contactPageHero = contactPageHero || settings.contactPageHero;
+      // Update existing settings
+      if (body.productsPageHero) {
+        if (!settings.productsPageHero) settings.productsPageHero = {};
+        Object.assign(settings.productsPageHero, body.productsPageHero);
+      }
+      if (body.blogPageHero) {
+        if (!settings.blogPageHero) settings.blogPageHero = {};
+        Object.assign(settings.blogPageHero, body.blogPageHero);
+      }
+      if (body.contactPageHero) {
+        if (!settings.contactPageHero) settings.contactPageHero = {};
+        Object.assign(settings.contactPageHero, body.contactPageHero);
+      }
       await settings.save();
     }
     return NextResponse.json(settings);
