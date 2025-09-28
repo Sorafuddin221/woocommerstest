@@ -218,7 +218,7 @@ export default function BlogPage() {
                 <Image src={getCorrectImageUrl(blogPost.image)} alt={blogPost.title || 'Blog post image'} width={400} height={250} className="w-full h-64 object-cover" />
                 <div className="p-6">
                   <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{blogPost.title}</h3>
+                  <h3 className="text-xl font-bold text-custom-orange mb-2">{blogPost.title}</h3>
                   {expandedPosts.has(blogPost._id) ? (
                     <div dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} className="text-gray-600 leading-relaxed" />
                   ) : (
