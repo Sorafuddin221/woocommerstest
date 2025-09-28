@@ -198,3 +198,6 @@ input[type="range"]::-moz-range-thumb {
     display: none !important;
   }
 }
+.text-custom-orange{
+  color: #f7931e;
+}
