@@ -43,7 +43,7 @@ const HandpickedItems: React.FC<HandpickedItemsProps> = ({ items }) => {
                         <Image src={item.image} alt={item.name || 'Product image'} width={200} height={200} className="mb-4 rounded-lg" />
                         <div className="w-full">
                             <p className="text-xs text-gray-500 font-semibold mb-1">{item.category}</p>
-                            <h3 className="font-bold text-lg mb-2">{item.name}</h3>
+                            <h3 className="font-bold text-custom-orange text-lg mb-2">{item.name}</h3>
                             
                             <div className="flex justify-center mb-2">
                                 {Array.from({ length: 5 }, (_, i) => (
