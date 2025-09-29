@@ -189,7 +189,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
               <h1 className="text-3xl font-bold text-custom-orange mb-4">{blogPost.title}</h1>
               <div  className="text-gray-700" dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} />
               {blogPost.affiliateLink && (
-                <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-blue-600 transition-colors mt-4">
+                <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-[#f7931e] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors">
                     Click Here
                 </Link>
               )}
