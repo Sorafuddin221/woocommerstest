@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import IconSection from "../components/IconSection";
 import TopCategories from "../components/TopCategories";
@@ -15,7 +14,7 @@ import { BlogPost } from '@/lib/interfaces';
 import { Product } from '@/lib/interfaces';
 
 
-import Footer from "../components/Footer";
+
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -91,7 +90,6 @@ export default function Home() {
 
   return (
     <div className="bg-gray-100 antialiased">    
-    <Header/>
     <HeroSection />
     <IconSection />
 
@@ -112,7 +110,6 @@ export default function Home() {
 
     <BlogPosts items={blogPosts} />
 
-    <Footer />
    </div>
 )
 }

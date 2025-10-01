@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 interface BlogPageTemplateProps {
@@ -14,7 +12,6 @@ interface BlogPageTemplateProps {
 const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, subheading, buttonUrl, children }) => {
   return (
     <div className="bg-gray-100 antialiased">
-      <Header />
 
       {/* Hero Section */}
       <section
@@ -44,7 +41,6 @@ const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, s
         {children}
       </div>
 
-      <Footer />
     </div>
   );
 };

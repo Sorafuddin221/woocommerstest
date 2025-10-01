@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 interface ProductPageTemplateProps {
@@ -15,7 +13,6 @@ interface ProductPageTemplateProps {
 const ProductPageTemplate: React.FC<ProductPageTemplateProps> = ({ title, heroImage, subheading, buttonUrl, breadcrumbs, children }) => {
   return (
     <div className="bg-gray-100 antialiased">
-      <Header />
 
       {/* Hero Section */}
       <section
@@ -43,7 +40,6 @@ const ProductPageTemplate: React.FC<ProductPageTemplateProps> = ({ title, heroIm
         {children}
       </div>
 
-      <Footer />
     </div>
   );
 };
