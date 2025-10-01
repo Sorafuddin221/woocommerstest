@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { BlogPost, Product, Settings } from '@/lib/interfaces';
+import { BlogPost, Product, HeroSectionSettings } from '@/lib/interfaces';
 
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -17,7 +17,7 @@ export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [blogCategories, setBlogCategories] = useState<string[]>([]);
-  const [heroSettings, setHeroSettings] = useState<Settings | null>(null);
+  const [heroSettings, setHeroSettings] = useState<HeroSectionSettings | null>(null);
   const postsPerPage = 6; // Display 6 blog posts per page
 
   useEffect(() => {
