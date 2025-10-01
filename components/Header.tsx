@@ -15,6 +15,7 @@ const Header = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
 
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [isMobile, setIsMobile] = useState(false);
@@ -233,7 +234,12 @@ const Header = () => {
           <div className="flex items-center space-x-4 flex-wrap">
             <div className="flex space-x-6 text-gray-300 flex-wrap">
               {menuItems.map((item) => (
-                <div key={item._id} className="relative group">
+                <div
+                  key={item._id}
+                  className="relative"
+                  onMouseEnter={() => setHoveredMenu(item._id)}
+                  onMouseLeave={() => setHoveredMenu(null)}
+                >
                   <Link href={item.page} className="hover:text-white transition-colors flex items-center">
                     {item.name}
                     {item.children && item.children.length > 0 && (
@@ -242,8 +248,8 @@ const Header = () => {
                       </svg>
                     )}
                   </Link>
-                  {item.children && item.children.length > 0 && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {hoveredMenu === item._id && item.children && item.children.length > 0 && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                       {item.children.map(child => (
                         <Link key={child._id} href={child.page} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{child.name}</Link>
                       ))}
