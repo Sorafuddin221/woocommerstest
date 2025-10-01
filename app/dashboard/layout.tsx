@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { usePathname } from 'next/navigation';
+import Footer from '../../components/Footer';
 
 export default function DashboardLayout({
   children,
@@ -52,6 +53,7 @@ export default function DashboardLayout({
         <div id="content-container" className="flex flex-col xl:flex-row flex-1">
           {children}
         </div>
+        <Footer />
       </div>
     </div>
   );
