@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import MobileSidebar from '../../components/MobileSidebar';
+import Sidebar from '../../components/Sidebar';
 import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({
@@ -33,9 +33,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-custom-bg text-custom-text">
       {/* Sidebar Navigation */}
-      <aside id="sidebar" className={`w-64 bg-custom-surface flex-shrink-0 p-4 fixed lg:relative lg:translate-x-0 h-full z-20 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out flex flex-col`}>
-        <MobileSidebar onClose={toggleSidebar} />
-      </aside>
+       <Sidebar />
 
       <div className="flex-1 flex flex-col lg:pl-5">
         {/* Top Header for Mobile */}
