@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import Header from '../../components/Header';
+
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react'; // Import signIn
 
@@ -31,7 +31,6 @@ export default function LoginPage() {
 
   return (
     <div className="bg-gray-100 antialiased">
-      <Header />
 
       {/* Login Form Section */}
       <section className="flex justify-center items-center h-screen bg-gray-100">
