@@ -5,6 +5,8 @@ import "./globals.css";
 import "./animations.css";
 import { Providers } from "./providers"; // Import Providers
 import CookieBanner from "@/components/CookieBanner";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 
 
@@ -59,7 +61,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         <Providers> {/* Use Providers instead of SessionProvider */}
+          <Header />
           {children}
+          <Footer />
         </Providers>
         <CookieBanner />
       </body>
