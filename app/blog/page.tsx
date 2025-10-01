@@ -131,10 +131,10 @@ export default function BlogPage() {
 
   return (
     <BlogPageTemplate
-      title={heroSettings?.blogPageHero?.heading || "Our Blog"}
-      heroImage={stripLocalhostPrefix(heroSettings?.blogPageHero?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg")}
-      subheading={heroSettings?.blogPageHero?.subheading || ""}
-      buttonUrl={heroSettings?.blogPageHero?.buttonUrl || ""}
+      title={heroSettings?.heading || "Our Blog"}
+      heroImage={stripLocalhostPrefix(heroSettings?.imageUrl || "/img/black-white-bedroom-with-red-accent.jpg")}
+      subheading={heroSettings?.subheading || ""}
+      buttonUrl={heroSettings?.buttonUrl || ""}
     >
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar */}
