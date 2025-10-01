@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
+import MobileSidebar from './MobileSidebar'; // Import MobileSidebar
+import SocialIcons from './SocialIcons'; // Import SocialIcons
+import { ThemeSettings, SocialLink, Category, MenuItem } from '@/lib/interfaces'; // MODIFIED LINE
 
 const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [settings, setSettings] = useState<Settings | null>(null);
+  const [settings, setSettings] = useState<ThemeSettings | null>(null); // MODIFIED LINE
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
