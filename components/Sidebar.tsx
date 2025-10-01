@@ -88,7 +88,7 @@ const Sidebar = () => {
         {/* Navigation Links */}
         <nav className="mt-8">
           <h3 className="px-3 text-xs font-semibold text-custom-text-secondary uppercase tracking-wider">Pages</h3>
-          <ul className="mt-3 space-y-1">
+          <ul className="mt-3 space-y-1 bg-red-500">
             {navItems.map((item) => (
               <li key={item.name}>
                 <Link href={item.href} className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/dashboard') ? 'bg-custom-card text-white' : 'text-custom-text-secondary hover:bg-custom-hover hover:text-white'}`}>
@@ -100,7 +100,7 @@ const Sidebar = () => {
           </ul>
 
           <h3 className="mt-8 px-3 text-xs font-semibold text-custom-text-secondary uppercase tracking-wider">User</h3>
-          <ul className="mt-3 space-y-1">
+          <ul className="mt-3 space-y-1 bg-red-500">
             {userNavItems.map((item) => (
               <li key={item.name}>
                 <Link href={item.href} className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${pathname === item.href ? 'bg-custom-card text-white' : 'text-custom-text-secondary hover:bg-custom-hover hover:text-white'}`}>
