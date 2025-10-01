@@ -55,7 +55,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
   };
 
   return (
-    <aside id="mobile-sidebar" className="w-64 bg-custom-surface flex-shrink-0 p-4 fixed lg:relative lg:translate-x-0 h-full z-20 transform transition-transform duration-300 ease-in-out flex flex-col">
+    <div id="mobile-sidebar" className="w-64 bg-custom-surface flex-shrink-0 p-4 flex flex-col">
       <div>
         {/* Profile Section */}
         <div className="flex items-center space-x-4 p-2">
@@ -106,7 +106,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ onClose }) => {
           </ul>
         </nav>
       </div>
-    </aside>
+    </div>
   );
 };
 
