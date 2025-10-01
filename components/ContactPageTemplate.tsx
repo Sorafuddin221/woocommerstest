@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 interface ContactPageTemplateProps {
@@ -14,7 +12,6 @@ interface ContactPageTemplateProps {
 const ContactPageTemplate: React.FC<ContactPageTemplateProps> = ({ title, heroImage, subheading, buttonUrl, children }) => {
   return (
     <div className="bg-gray-100 antialiased">
-      <Header />
 
       {/* Hero Section */}
       <section
@@ -41,7 +38,6 @@ const ContactPageTemplate: React.FC<ContactPageTemplateProps> = ({ title, heroIm
         {children}
       </div>
 
-      <Footer />
     </div>
   );
 };
