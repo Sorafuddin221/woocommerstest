@@ -2,10 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import MobileSidebar from './MobileSidebar'; // Import MobileSidebar
-import SocialIcons from './SocialIcons'; // Import SocialIcons
-import { Settings, SocialLink, Category, MenuItem } from '@/lib/interfaces';
+import { useState, useEffect, useRef } from 'react';
 
 const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -16,9 +13,7 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
-
-  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,6 +86,19 @@ const Header = () => {
     fetchSocialLinks();
     fetchMenuItems();
   }, []);
+
+  const handleMouseEnter = (itemId: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setHoveredMenu(itemId);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setHoveredMenu(null);
+    }, 200);
+  };
 
   const openMobileSidebar = () => {
     setIsMobileSidebarOpen(true);
@@ -237,8 +245,8 @@ const Header = () => {
                 <div
                   key={item._id}
                   className="relative"
-                  onMouseEnter={() => setHoveredMenu(item._id)}
-                  onMouseLeave={() => setHoveredMenu(null)}
+                  onMouseEnter={() => handleMouseEnter(item._id)}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <Link href={item.page} className="hover:text-white transition-colors flex items-center">
                     {item.name}
@@ -249,7 +257,11 @@ const Header = () => {
                     )}
                   </Link>
                   {hoveredMenu === item._id && item.children && item.children.length > 0 && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                    <div
+                      className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
+                      onMouseEnter={() => handleMouseEnter(item._id)}
+                      onMouseLeave={handleMouseLeave}
+                    >
                       {item.children.map(child => (
                         <Link key={child._id} href={child.page} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{child.name}</Link>
                       ))}
