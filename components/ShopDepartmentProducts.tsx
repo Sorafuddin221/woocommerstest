@@ -59,7 +59,7 @@ const ShopDepartmentProducts: React.FC<ShopDepartmentProductsProps> = ({ items, 
 
         <div id="fashion-product-list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {filteredProducts && filteredProducts.map((product, index) => (
-            <div key={`${product._id}-${index}`} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
+            <Link href={`/product/${product._id}`} key={`${product._id}-${index}`} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
               {product.isSale && (
                 <div className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">
                   SALE!
@@ -71,9 +71,6 @@ const ShopDepartmentProducts: React.FC<ShopDepartmentProductsProps> = ({ items, 
                     Buy Now
                   </a>
                 )}
-                <Link href={`/product/${product._id}`} className="bg-gray-700 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-gray-600 transition-colors">
-                  Details
-                </Link>
               </div>
               <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white cursor-pointer hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,7 +92,7 @@ const ShopDepartmentProducts: React.FC<ShopDepartmentProductsProps> = ({ items, 
                 <p className="text-red-600 font-bold text-xl">${product.price.toFixed(2)}</p>
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mt-2">{product.category.toUpperCase()}</span> {/* Category as tag */}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
