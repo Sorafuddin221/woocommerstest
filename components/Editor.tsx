@@ -13,7 +13,7 @@ const Editor: React.FC<EditorProps> = ({ content, onChange }) => {
     <TinyMCEEditor
       apiKey="jinv9suq53hvoazfy9dayv42ue9u5c5371jn9rbsoggawqx3"
       value={content}
-      onEditorChange={(newContent) => onChange(newContent)}
+      onEditorChange={(newContent: string) => onChange(newContent)}
       init={{
         height: 500,
         menubar: true,
