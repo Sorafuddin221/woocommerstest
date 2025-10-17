@@ -42,6 +42,12 @@ const Sidebar = () => {
     { name: 'Footer Settings', href: '/dashboard/footer-settings', icon: (
       <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 16v-2m0-10v2m0 6v2m-6-4h2m10 0h2M6 12H4m16 0h-2m-5-5v2m0 6v2m-6-4h2m10 0h2" /></svg>
     )},
+    { name: 'Footer Menu', href: '/dashboard/footer-menu', icon: (
+      <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+    )},
+    { name: 'Pages', href: '/dashboard/pages', icon: (
+      <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+    )},
     { name: 'Newsletter Subscriptions', href: '/dashboard/newsletter-subscriptions', icon: (
       <svg className="h-6 w-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
     )},

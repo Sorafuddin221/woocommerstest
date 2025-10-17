@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-const PrivacyPolicyPage: React.FC = () => {
+const DisclosurePage: React.FC = () => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -11,9 +11,9 @@ const PrivacyPolicyPage: React.FC = () => {
     const fetchContent = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pages/privacy-policy`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/pages/disclosure`);
         if (!response.ok) {
-          throw new Error('Failed to fetch privacy policy content');
+          throw new Error('Failed to fetch disclosure content');
         }
         const data = await response.json();
         setContent(data.content);
@@ -31,7 +31,7 @@ const PrivacyPolicyPage: React.FC = () => {
     <div className="bg-gray-50 min-h-screen">
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-800">Privacy Policy</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Disclosure</h1>
         </div>
       </header>
       <main className="container mx-auto px-4 py-8">
@@ -49,4 +49,4 @@ const PrivacyPolicyPage: React.FC = () => {
   );
 };
 
-export default PrivacyPolicyPage;
+export default DisclosurePage;

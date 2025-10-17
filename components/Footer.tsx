@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { ContactSettings, FooterSettings } from '@/lib/interfaces';
+import FooterMenu from './FooterMenu';
 
 const Footer = () => {
 const [contactSettings, setContactSettings] = useState<ContactSettings>({
@@ -172,7 +173,7 @@ const [contactSettings, setContactSettings] = useState<ContactSettings>({
 
         {/* Footer Bottom Section */}
         <div className="mt-12 pt-8 border-t border-gray-700 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-          
+          <FooterMenu />
           <p className="text-sm text-gray-400 text-center md:text-left">{footerSettings?.copyrightText}</p>
           <div className="flex space-x-2">
             {footerSettings?.clientLogos?.map((logo, index) => (
