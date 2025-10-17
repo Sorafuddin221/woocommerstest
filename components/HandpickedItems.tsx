@@ -18,7 +18,7 @@ const HandpickedItems: React.FC<HandpickedItemsProps> = ({ items }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 
                 {items.map((item, index) => (
-                    <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
+                <Link href={`/product/${item._id}`} key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
 
                         {item.isSale && (
                             <div className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">
@@ -29,9 +29,6 @@ const HandpickedItems: React.FC<HandpickedItemsProps> = ({ items }) => {
                         <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-80 transition-opacity duration-300">
                             <Link href={item.url} target="_blank" rel="noopener noreferrer" className="bg-[#f7931e] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-orange-600 transition-colors">
                                 Buy Now
-                            </Link>
-                            <Link href={`/product/${item._id}`} className="bg-gray-700 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-gray-600 transition-colors">
-                                Details
                             </Link>
                         </div>
                         
@@ -59,7 +56,7 @@ const HandpickedItems: React.FC<HandpickedItemsProps> = ({ items }) => {
                                 <p className="text-gray-800 font-bold text-xl">${item.price}</p>
                             )}
                         </div>
-                    </div>
+                </Link>
                 ))}
             </div>
         </div>

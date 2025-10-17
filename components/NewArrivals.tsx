@@ -18,7 +18,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
 
         <div id="product-list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {items.map((product) => (
-            <div key={product._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
+            <Link href={`/product/${product._id}`} key={product._id} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center group relative">
               {product.isSale && (
                 <div className="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-br-lg">
                   SALE!
@@ -27,9 +27,6 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
               <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-80 transition-opacity duration-300">
                 <Link href={product.url} target="_blank" rel="noopener noreferrer" className="bg-[#f7931e] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-orange-600 transition-colors">
                   Buy Now
-                </Link>
-                <Link href={`/product/${product._id}`} className="bg-gray-700 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-gray-600 transition-colors">
-                  Details
                 </Link>
               </div>
               <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -51,7 +48,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ items }) => {
                 )}
                 <p className="text-gray-800 font-bold text-xl">${product.price.toFixed(2)}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
