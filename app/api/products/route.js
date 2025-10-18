@@ -114,6 +114,7 @@ export async function POST(request) {
     originalPrice: body.originalPrice,
     isSale: body.isSale,
     url: body.url,
+    buttons: body.buttons,
   });
 
   try {

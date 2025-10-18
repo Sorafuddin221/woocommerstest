@@ -55,6 +55,7 @@ export async function PUT(request, { params }) {
     if (body.category != null) blogPost.category = body.category;
     if (body.excerpt != null) blogPost.excerpt = body.excerpt;
     if (body.affiliateLink != null) blogPost.affiliateLink = body.affiliateLink;
+    if (body.buttons != null) blogPost.buttons = body.buttons;
 
     const updatedBlogPost = await blogPost.save();
     return NextResponse.json(updatedBlogPost);

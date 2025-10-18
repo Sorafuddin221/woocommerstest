@@ -70,6 +70,7 @@ export async function POST(request) {
     category: body.category,
     excerpt: body.excerpt,
     affiliateLink: body.affiliateLink,
+    buttons: body.buttons,
   });
 
   try {
