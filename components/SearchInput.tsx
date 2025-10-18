@@ -13,7 +13,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ placeholder, onChange, value 
       <input
         type="text"
         placeholder={placeholder}
-        className="bg-custom-surface w-full md:w-64 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+        className="bg-custom-surface w-full md:w-64 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 text-black focus:ring-custom-accent text-sm"
         onChange={onChange}
         value={value}
       />
