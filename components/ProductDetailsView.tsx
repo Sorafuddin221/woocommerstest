@@ -82,21 +82,21 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
           {product.buttons && product.buttons.length > 0 && (
             <div className="mt-6 space-y-4">
               {product.buttons.map((button, index) => (
-                <a
-                  key={index}
-                  href={button.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
-                >
-                  {button.text}
-                  {button.regularPrice && (
-                    <span className="ml-2 line-through opacity-75">${button.regularPrice.toFixed(2)}</span>
-                  )}
-                  {button.salePrice && (
-                    <span className="ml-2">${button.salePrice.toFixed(2)}</span>
-                  )}
-                </a>
+                <div key={index} className="flex items-center justify-between py-4 px-6 border-b border-gray-200 bg-white rounded-lg shadow-md">
+                  <span className="w-1/3 font-bold text-lg">{button.text}:</span>
+                  <span className="w-1/3 text-center text-gray-800 font-semibold">
+                    {button.regularPrice && (
+                      <span className="line-through mr-2">${button.regularPrice.toFixed(2)}</span>
+                    )}
+                    {button.salePrice && (
+                      <span className="text-red-500 font-bold">${button.salePrice.toFixed(2)}</span>
+                    )}
+                  </span>
+                  <div className="w-1/3 flex justify-end items-center space-x-4">
+                    <span className="text-green-500 font-semibold hidden md:block">In Stock</span>
+                    <a href={button.url} target="_blank" rel="noopener noreferrer" className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200">Buy Now</a>
+                  </div>
+                </div>
               ))}
             </div>
           )}
