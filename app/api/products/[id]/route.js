@@ -14,6 +14,7 @@ export async function GET(request, { params }) {
         { status: 404 }
       );
     }
+    console.log('Product data from API:', product);
     return NextResponse.json(product);
   } catch (error) {
     return NextResponse.json(
