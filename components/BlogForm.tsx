@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Editor from './Editor'; // Import the new Editor component
 
+interface Button {
+  text: string;
+  url: string;
+  regularPrice?: string;
+  salePrice?: string;
+}
+
 interface BlogFormData {
   title: string;
   category: string;
@@ -11,6 +18,7 @@ interface BlogFormData {
   content: string;
   author?: string;
   affiliateLink?: string;
+  buttons?: Button[];
 }
 
 interface BlogFormProps {

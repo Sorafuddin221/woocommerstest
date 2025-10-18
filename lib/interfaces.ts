@@ -1,3 +1,10 @@
+export interface Button {
+  text: string;
+  url: string;
+  regularPrice?: number;
+  salePrice?: number;
+}
+
 export interface SocialLink {
   _id?: string;
   platform: string;
@@ -22,6 +29,7 @@ export interface Product {
   reviewCount?: number;
   gallery?: string[];
   shortDescription?: string;
+  buttons?: Button[];
 }
 
 export interface BlogPost {
@@ -35,6 +43,7 @@ export interface BlogPost {
   author?: string;
   content?: string;
   affiliateLink?: string;
+  buttons?: Button[];
 }
 
 export interface Review {
@@ -112,6 +121,7 @@ export interface ProductFormData {
   image: string; // Added for the image data URL
   gallery: string[]; // Added for gallery images
   url: string;
+  buttons?: Button[];
 }
 
 export interface Transaction {
