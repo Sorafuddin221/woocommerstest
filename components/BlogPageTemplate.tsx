@@ -10,7 +10,7 @@ interface BlogPageTemplateProps {
   children: React.ReactNode;
 }
 
-const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, subheading, buttonUrl, children }) => {
+const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, subheading, buttonUrl, buttons, children }) => {
   return (
     <div className="bg-gray-100 antialiased">
 
