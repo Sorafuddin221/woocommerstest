@@ -34,7 +34,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }
   const [buttons, setButtons] = useState(initialData?.buttons || []);
 
   const handleAddButton = () => {
-    setButtons([...buttons, { text: '', url: '', regularPrice: '', salePrice: '' }]);
+    setButtons([...buttons, { text: '', url: '', regularPrice: undefined, salePrice: undefined }]);
   };
 
   const handleRemoveButton = (index: number) => {
