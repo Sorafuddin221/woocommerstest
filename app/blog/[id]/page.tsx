@@ -188,14 +188,30 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
               <p className="text-sm text-gray-500 mb-2">{new Date(blogPost.date).toLocaleDateString()}</p>
               <h1 className="text-3xl font-bold text-custom-orange mb-4">{blogPost.title}</h1>
               <div  className="text-gray-700" dangerouslySetInnerHTML={{ __html: blogPost.content || '' }} />
-              {blogPost.affiliateLink && (
-                <Link href={blogPost.affiliateLink} target="_blank" rel="noopener noreferrer" className="inline-block bg-[#f7931e] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors">
-                    Click Here
-                </Link>
-              )}
             </div>
           </main>
         </div>
+        {blogPost.buttons && blogPost.buttons.length > 0 && (
+            <div className="mt-6 space-y-4">
+              {blogPost.buttons.map((button, index) => (
+                <div key={index} className="flex items-center justify-between py-4 px-6 border-b border-gray-200 bg-white rounded-lg shadow-md">
+                  <span className="w-1/3 font-bold text-lg">{button.text}:</span>
+                  <span className="w-1/3 text-center text-gray-800 font-semibold">
+                    {button.regularPrice && (
+                      <span className="line-through mr-2">${button.regularPrice.toFixed(2)}</span>
+                    )}
+                    {button.salePrice && (
+                      <span className="text-red-500 font-bold">${button.salePrice.toFixed(2)}</span>
+                    )}
+                  </span>
+                  <div className="w-1/3 flex justify-end items-center space-x-4">
+                    <span className="text-green-500 font-semibold hidden md:block">In Stock</span>
+                    <a href={button.url} target="_blank" rel="noopener noreferrer" className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200">Buy Now</a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         <HandpickedItems items={topViewedProducts} />
     </BlogPageTemplate>
   );
