@@ -26,7 +26,7 @@ const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, s
           <h1 className="text-5xl font-bold mb-4">{title || "Our Blog"}</h1>
           {subheading && <p className="text-xl mb-8">{subheading}</p>}
           {buttonUrl && (
-            <Link href={buttonUrl} className="bg-[#f7931e] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-orange-600 transition-colors duration-200">
+            <Link href={buttonUrl} className="bg-[#f7931e] text-black px-8 py-3 rounded-full text-lg font-semibold hover:bg-orange-600 transition-colors duration-200">
               Read More
             </Link>
           )}
