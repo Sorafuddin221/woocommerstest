@@ -82,19 +82,19 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
           {product.buttons && product.buttons.length > 0 && (
             <div className="mt-6 space-y-4">
               {product.buttons.map((button, index) => (
-                <div key={index} className="flex items-center justify-between py-4 px-6 border-b border-gray-200 bg-white rounded-lg shadow-md">
-                  <span className="w-1/3 font-bold text-lg">{button.text}:</span>
-                  <span className="w-1/3 text-center text-gray-800 font-semibold">
+                <div key={index} className="flex flex-col md:flex-row items-center justify-between py-4 px-6 border-b border-gray-200 bg-white rounded-lg shadow-md space-y-4 md:space-y-0">
+                  <span className="w-full md:w-1/3 font-bold text-lg text-center md:text-left">{button.text}:</span>
+                  <span className="w-full md:w-1/3 text-center text-gray-800 font-semibold">
                     {button.regularPrice && (
-                      <span className="line-through mr-2">${button.regularPrice.toFixed(2)}</span>
+                      <span className="line-through mr-2 text-base md:text-lg">${button.regularPrice.toFixed(2)}</span>
                     )}
                     {button.salePrice && (
-                      <span className="text-red-500 font-bold">${button.salePrice.toFixed(2)}</span>
+                      <span className="text-red-500 font-bold text-lg md:text-xl">${button.salePrice.toFixed(2)}</span>
                     )}
                   </span>
-                  <div className="w-1/3 flex justify-end items-center space-x-4">
+                  <div className="w-full md:w-1/3 flex justify-center md:justify-end items-center space-x-4">
                     <span className="text-green-500 font-semibold hidden md:block">In Stock</span>
-                    <a href={button.url} target="_blank" rel="noopener noreferrer" className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200">Buy Now</a>
+                    <a href={button.url} target="_blank" rel="noopener noreferrer" className="bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition-colors duration-200 text-sm md:text-base">Buy Now</a>
                   </div>
                 </div>
               ))}
