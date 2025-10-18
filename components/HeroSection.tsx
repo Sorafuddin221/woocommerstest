@@ -48,14 +48,14 @@ const HeroSection = () => {
   const slide = settings.heroSlides[currentSlide];
 
   return (
-    <main className="w-full min-h-[600px] bg-black text-white relative py-8 md:py-16">
+    <main className="w-full min-h-[400px] sm:min-h-[500px] md:min-h-[600px] bg-black text-white relative py-8 md:py-16">
       <div className="hero-slider-container h-full">
         <div className="hero-slider-wrapper h-full">
           <div key={currentSlide} className="hero-slider-item bg-black h-full flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-8 px-4">
             {/* Left Content */}
             <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left animate-slide-in-left">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 break-words">{slide.title}</h1>
-              <p className="text-gray-400 text-sm md:text-base font-medium mb-6">{slide.subtitle}</p>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 break-words">{slide.title}</h1>
+              <p className="text-gray-400 text-xs sm:text-sm md:text-base font-medium mb-6">{slide.subtitle}</p>
               {slide.ctaButtonText && slide.ctaButtonLink && (
                 <Link href={slide.ctaButtonLink} className="bg-[#e99e23] text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-orange-600 transition-colors animate-fade-in">
                   {slide.ctaButtonText}
@@ -64,7 +64,7 @@ const HeroSection = () => {
             </div>
             {/* Right Image */}
             <div className="w-full md:w-1/2 flex items-center justify-center animate-slide-in-right">
-              <Image src={slide.image} alt={slide.title} width={300} height={300} className="w-full max-w-xs md:max-w-lg object-contain hover:scale-105 transition-transform duration-300" />
+              <Image src={slide.image} alt={slide.title} width={300} height={300} className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg object-contain hover:scale-105 transition-transform duration-300" />
             </div>
           </div>
         </div>

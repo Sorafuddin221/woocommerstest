@@ -140,7 +140,7 @@ const Header = () => {
                       <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
                     )}
                     {settings.showHeaderLogoText && settings.headerLogoText && (
-                      <span className="text-3xl font-bold">{settings.headerLogoText}</span>
+                      <span className="text-2xl sm:text-3xl font-bold">{settings.headerLogoText}</span>
                     )}
                   </div>
                 )}
@@ -163,7 +163,7 @@ const Header = () => {
                     <img src={settings.headerLogoUrl} alt="Affiliate Logo" width={40} height={40} className="rounded-full" />
                   )}
                   {settings.showHeaderLogoText && settings.headerLogoText && (
-                    <span className="text-3xl font-bold">{settings.headerLogoText}</span>
+                    <span className="text-2xl sm:text-3xl font-bold">{settings.headerLogoText}</span>
                   )}
                 </div>
               )}
