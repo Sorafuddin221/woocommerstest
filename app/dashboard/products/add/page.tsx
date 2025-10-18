@@ -30,6 +30,7 @@ const AddProductPage: React.FC = () => {
           originalPrice: null, // Default originalPrice
           isSale: false, // Default isSale
           url: formData.url,
+          buttons: formData.buttons, // Add this line to save buttons
         }),
       });
 
