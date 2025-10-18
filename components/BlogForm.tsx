@@ -100,8 +100,8 @@ const BlogForm: React.FC<BlogFormProps> = ({ onSubmit, initialData, categories }
       buttons: buttons.map(button => ({
         text: button.text,
         url: button.url,
-        regularPrice: parseFloat(button.regularPrice) || undefined,
-        salePrice: parseFloat(button.salePrice) || undefined,
+        regularPrice: button.regularPrice,
+        salePrice: button.salePrice,
       })),
     };
 
