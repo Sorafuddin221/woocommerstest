@@ -6,8 +6,8 @@ import Editor from './Editor'; // Import the new Editor component
 interface Button {
   text: string;
   url: string;
-  regularPrice?: string;
-  salePrice?: string;
+  regularPrice?: number;
+  salePrice?: number;
 }
 
 interface BlogFormData {
