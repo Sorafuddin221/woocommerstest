@@ -155,7 +155,7 @@ export default async function SingleBlogPostPage({ params }: { params: { id: str
   };
 
   return (
-    <BlogPageTemplate buttons={blogPost.buttons}>
+    <BlogPageTemplate>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
