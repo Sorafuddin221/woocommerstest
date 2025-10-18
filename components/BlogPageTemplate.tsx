@@ -6,6 +6,7 @@ interface BlogPageTemplateProps {
   heroImage?: string;
   subheading?: string;
   buttonUrl?: string;
+  buttons?: Array<{ text: string; url: string; regularPrice?: number; salePrice?: number }>;
   children: React.ReactNode;
 }
 
@@ -29,6 +30,29 @@ const BlogPageTemplate: React.FC<BlogPageTemplateProps> = ({ title, heroImage, s
             <Link href={buttonUrl} className="bg-[#f7931e] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-orange-600 transition-colors duration-200">
               Read More
             </Link>
+          )}
+
+          {/* Custom Buttons */}
+          {buttons && buttons.length > 0 && (
+            <div className="mt-6 space-y-4">
+              {buttons.map((button, index) => (
+                <a
+                  key={index}
+                  href={button.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
+                >
+                  {button.text}
+                  {button.regularPrice && (
+                    <span className="ml-2 line-through opacity-75">${button.regularPrice.toFixed(2)}</span>
+                  )}
+                  {button.salePrice && (
+                    <span className="ml-2">${button.salePrice.toFixed(2)}</span>
+                  )}
+                </a>
+              ))}
+            </div>
           )}
         </div>
       </section>

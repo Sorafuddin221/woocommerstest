@@ -23,6 +23,23 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
   const [galleryPreviews, setGalleryPreviews] = useState<string[]>(initialData?.gallery || []);
   const [description, setDescription] = useState(initialData?.description || '');
   const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
+  const [buttons, setButtons] = useState(initialData?.buttons || []);
+
+  const handleAddButton = () => {
+    setButtons([...buttons, { text: '', url: '', regularPrice: '', salePrice: '' }]);
+  };
+
+  const handleRemoveButton = (index: number) => {
+    const newButtons = [...buttons];
+    newButtons.splice(index, 1);
+    setButtons(newButtons);
+  };
+
+  const handleButtonChange = (index: number, field: string, value: string) => {
+    const newButtons = [...buttons];
+    newButtons[index] = { ...newButtons[index], [field]: value };
+    setButtons(newButtons);
+  };
 
   const fetchData = async () => {
     try {
@@ -179,6 +196,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         image: imageUrl,
         gallery: finalGalleryUrls, // Use the finalGalleryUrls
         url: formData.get('url') as string,
+        buttons: buttons.map(button => ({
+          text: button.text,
+          url: button.url,
+          regularPrice: parseFloat(button.regularPrice) || undefined,
+          salePrice: parseFloat(button.salePrice) || undefined,
+        })),
       };
 
       const success = await onSubmit(productData);
@@ -328,6 +351,59 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
           </div>
           <textarea name="metaKeywords" placeholder="Meta Keywords" rows={3} defaultValue={initialData?.metaKeywords} className="md:col-span-2 w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"></textarea>
           <textarea name="metaDescription" placeholder="Meta Description" rows={3} defaultValue={initialData?.metaDescription} className="md:col-span-2 w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"></textarea>
+        </div>
+
+        {/* Buttons Section */}
+        <div className="mt-6 md:col-span-2">
+          <h3 className="text-xl font-bold text-white mb-4">Custom Buttons</h3>
+          {buttons.map((button, index) => (
+            <div key={index} className="bg-custom-card p-4 rounded-lg mb-4 relative">
+              <button
+                type="button"
+                onClick={() => handleRemoveButton(index)}
+                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+              >
+                &times;
+              </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Button Text"
+                  value={button.text}
+                  onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+                />
+                <input
+                  type="text"
+                  placeholder="Button URL"
+                  value={button.url}
+                  onChange={(e) => handleButtonChange(index, 'url', e.target.value)}
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+                />
+                <input
+                  type="number"
+                  placeholder="Regular Price"
+                  value={button.regularPrice}
+                  onChange={(e) => handleButtonChange(index, 'regularPrice', e.target.value)}
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+                />
+                <input
+                  type="number"
+                  placeholder="Sale Price"
+                  value={button.salePrice}
+                  onChange={(e) => handleButtonChange(index, 'salePrice', e.target.value)}
+                  className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm"
+                />
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddButton}
+            className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition mt-4"
+          >
+            Add New Button
+          </button>
         </div>
         <div className="mt-6">
           <button type="submit" className="w-full bg-custom-accent text-white font-semibold py-3 rounded-lg hover:bg-purple-700 transition">
