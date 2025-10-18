@@ -199,9 +199,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         buttons: buttons.map(button => ({
           text: button.text,
           url: button.url,
-          regularPrice: parseFloat(button.regularPrice) || undefined,
-          salePrice: parseFloat(button.salePrice) || undefined,
-        })),
+                  regularPrice: button.regularPrice,
+                  salePrice: button.salePrice,        })),
       };
 
       const success = await onSubmit(productData);
