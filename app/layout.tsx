@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import "./animations.css";
 import { Providers } from "./providers"; // Import Providers
+import { CartProvider } from "./context/CartContext"; // Import CartProvider
 import CookieBanner from "@/components/CookieBanner";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -61,9 +62,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         <Providers> {/* Use Providers instead of SessionProvider */}
-          <Header />
-          {children}
-          <Footer />
+          <CartProvider>
+            <Header />
+            {children}
+            <Footer />
+          </CartProvider>
         </Providers>
         <CookieBanner />
       </body>

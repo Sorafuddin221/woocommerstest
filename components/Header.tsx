@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import MobileSidebar from './MobileSidebar'; // Import MobileSidebar
 import SocialIcons from './SocialIcons'; // Import SocialIcons
-import { ThemeSettings, SocialLink, Category, MenuItem } from '@/lib/interfaces'; // MODIFIED LINE
+import { ThemeSettings, SocialLink, Category, MenuItem } from '@/lib/interfaces';
+import { useCart } from '@/app/context/CartContext'; // MODIFIED LINE
 
 const Header = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -19,6 +20,8 @@ const Header = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { cartCount } = useCart();
 
   useEffect(() => {
     const handleResize = () => {
@@ -149,6 +152,16 @@ const Header = () => {
             <div className="flex items-center hide-on-small-screen">
                 <SocialIcons socialLinks={socialLinks} />
             </div>
+            <Link href="/cart" className="relative flex items-center text-gray-300 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
         </div>
 
         {/* Desktop Header */}
@@ -204,7 +217,17 @@ const Header = () => {
               <div className="flex gap-3">
                 <SocialIcons socialLinks={socialLinks} />
               </div>
-              
+              <Link href="/cart" className="relative flex items-center text-gray-300 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span className="ml-1">Cart</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
             </div>
         </div>
         <div className="w-full md:hidden">

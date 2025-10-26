@@ -30,6 +30,7 @@ export interface Product {
   gallery?: string[];
   shortDescription?: string;
   buttons?: Button[];
+  stock: number;
 }
 
 export interface BlogPost {

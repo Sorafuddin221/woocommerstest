@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { FacebookShareButton, TwitterShareButton, PinterestShareButton, WhatsappShareButton, FacebookIcon, TwitterIcon, PinterestIcon, WhatsappIcon } from 'react-share';
 import Reviews from './Reviews';
 import { Product, Review } from '@/lib/interfaces';
+import { useCart } from '@/app/context/CartContext'; // Import useCart
 
 interface ProductDetailsViewProps {
   product: Product;
@@ -16,6 +17,7 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
   const [activeTab, setActiveTab] = useState('description');
   const [mainImage, setMainImage] = useState(product.image ? (product.image.startsWith('http') ? product.image : `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`) : '/img/placeholder.jpg');
   const [shareUrl, setShareUrl] = useState('');
+  const [quantity, setQuantity] = useState(1); // State for quantity
 
   useEffect(() => {
     setShareUrl(window.location.href);
@@ -77,6 +79,38 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
           <p className="text-gray-800 font-bold text-4xl mb-4">${product.price}</p>
 
           <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: product.shortDescription || '' }} />
+
+          {/* Quantity Selector and Add to Cart Button */}
+          <div className="flex items-center space-x-4 mb-6">
+            <div className="flex items-center border border-gray-300 rounded-md">
+              <button
+                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-l-md"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-16 text-center border-l border-r border-gray-300 focus:outline-none"
+                min="1"
+              />
+              <button
+                onClick={() => setQuantity(prev => prev + 1)}
+                className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-r-md"
+              >
+                +
+              </button>
+            </div>
+            <button
+              onClick={() => addItem(product, quantity)}
+              disabled={product.stock <= 0}
+              className={`flex-grow bg-[#f7931e] text-white px-6 py-3 rounded-md text-lg font-semibold transition-colors duration-200 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'}`}
+            >
+              {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+            </button>
+          </div>
 
           {/* Custom Buttons */}
           {product.buttons && product.buttons.length > 0 && (
