@@ -41,7 +41,7 @@ export default function CheckoutForm({ orderId }: CheckoutFormProps) {
     // Otherwise, your customer will be redirected to your `return_url`.
     if (error) {
       if (error.type === "card_error" || error.type === "validation_error") {
-        setMessage(error.message);
+        setMessage(error.message ?? "An unexpected error occurred.");
       } else {
         setMessage("An unexpected error occurred.");
       }
