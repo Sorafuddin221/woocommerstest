@@ -13,6 +13,7 @@ interface ProductDetailsViewProps {
 }
 
 export default function ProductDetailsView({ product: initialProduct }: { product: Product }) {
+  const { addItem } = useCart();
   const [product, setProduct] = useState(initialProduct);
   const [activeTab, setActiveTab] = useState('description');
   const [mainImage, setMainImage] = useState(product.image ? (product.image.startsWith('http') ? product.image : `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.image}`) : '/img/placeholder.jpg');
