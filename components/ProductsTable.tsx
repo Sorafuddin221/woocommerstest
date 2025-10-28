@@ -77,7 +77,7 @@ const ProductsTable: React.FC = () => {
       accessor: 'createdAt',
       Cell: ({ value }: { value: string }) => new Date(value).toLocaleDateString(),
     },
-    { Header: 'Stock', accessor: 'rating' }, // Using rating as a placeholder for stock
+    { Header: 'Stock', accessor: 'stock' },
     {
       Header: 'Action',
       accessor: 'action',

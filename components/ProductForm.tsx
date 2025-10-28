@@ -188,7 +188,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         brand: showNewBrandInput ? formData.get('newBrand') as string : formData.get('brand') as string,
         shopDepartment: showNewShopDepartmentInput ? formData.get('newShopDepartment') as string : formData.get('shopDepartment') as string,
         price: formData.get('price') as string,
-        stock: formData.get('stock') as string,
+        stock: parseInt(formData.get('stock') as string, 10),
         description: description,
         shortDescription: shortDescription,
         metaKeywords: formData.get('metaKeywords') as string,
@@ -319,7 +319,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
           )}
 
           <input type="text" name="price" placeholder="price" defaultValue={initialData?.price} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
-          <input type="text" name="stock" placeholder="stock" defaultValue={initialData?.stock} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
+          <input type="number" name="stock" placeholder="stock" defaultValue={initialData?.stock} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
           
           <input type="text" name="url" placeholder="URL" defaultValue={initialData?.url} className="w-full bg-custom-card rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-custom-accent text-sm" />
           <div className="md:col-span-2">
