@@ -188,7 +188,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
         brand: showNewBrandInput ? formData.get('newBrand') as string : formData.get('brand') as string,
         shopDepartment: showNewShopDepartmentInput ? formData.get('newShopDepartment') as string : formData.get('shopDepartment') as string,
         price: formData.get('price') as string,
-        stock: parseInt(formData.get('stock') as string, 10),
+        stock: formData.get('stock') as string,
         description: description,
         shortDescription: shortDescription,
         metaKeywords: formData.get('metaKeywords') as string,
