@@ -3,6 +3,17 @@ import dbConnect from '@/lib/db';
 import Order from '@/lib/models/Order';
 import Product from '@/lib/models/Product';
 
+export async function GET() {
+  await dbConnect();
+  try {
+    const orders = await Order.find({}).populate('orderItems.product');
+    return NextResponse.json(orders, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    return NextResponse.json({ message: 'Error fetching orders', error: error.message }, { status: 500 });
+  }
+}
+
 export async function POST(req) {
   await dbConnect();
 

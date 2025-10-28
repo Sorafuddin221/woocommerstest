@@ -125,11 +125,44 @@ export interface ProductFormData {
   buttons?: Button[];
 }
 
-export interface Transaction {
+export interface OrderItem {
+  product: string; // Product ID
   name: string;
-  status: 'pending' | 'done' | 'cancelled';
-  date: string;
-  amount: string;
+  quantity: number;
+  image: string;
+  price: number;
+}
+
+export interface ShippingAddress {
+  fullName: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface Order {
+  _id: string;
+  user?: string; // User ID
+  orderItems: OrderItem[];
+  shippingAddress: ShippingAddress;
+  paymentMethod: string;
+  paymentResult?: {
+    id?: string;
+    status?: string;
+    update_time?: string;
+    email_address?: string;
+  };
+  itemsPrice: number;
+  shippingPrice: number;
+  taxPrice: number;
+  totalPrice: number;
+  isPaid: boolean;
+  paidAt?: string;
+  isDelivered: boolean;
+  deliveredAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserFormData {
