@@ -114,7 +114,7 @@ export interface ProductFormData {
   brand: string;
   shopDepartment: string;
   price: string;
-  stock: string;
+  stock: number;
   description: string;
   shortDescription: string;
   metaKeywords: string;
