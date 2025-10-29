@@ -111,6 +111,7 @@ export async function POST(request) {
     image: body.image,
     gallery: body.gallery || [],
     rating: body.rating,
+    stock: body.stock,
     originalPrice: body.originalPrice,
     isSale: body.isSale,
     url: body.url,
