@@ -106,10 +106,10 @@ export default function ProductDetailsView({ product: initialProduct }: { produc
             </div>
             <button
               onClick={() => addItem(product, quantity)}
-              disabled={product.stock <= 0}
-              className={`flex-grow bg-[#f7931e] text-white px-6 py-3 rounded-md text-lg font-semibold transition-colors duration-200 ${product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'}`}
+              disabled={!product.stock || product.stock <= 0}
+              className={`flex-grow bg-[#f7931e] text-white px-6 py-3 rounded-md text-lg font-semibold transition-colors duration-200 ${!product.stock || product.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-600'}`}
             >
-              {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+              {!product.stock || product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
           </div>
 
