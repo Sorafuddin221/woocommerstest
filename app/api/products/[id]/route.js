@@ -49,6 +49,7 @@ export async function PUT(request, { params }) {
     if (body.rating != null) product.rating = body.rating;
     if (body.originalPrice != null) product.originalPrice = body.originalPrice;
     if (body.isSale != null) product.isSale = body.isSale;
+    if (body.stock != null) product.stock = body.stock;
     if (body.url != null) product.url = body.url;
     if (body.buttons != null) product.buttons = body.buttons;
 
